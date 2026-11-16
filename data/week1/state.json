@@ -1,71 +1,55 @@
 {
  "open": [
   {
-   "shares": 5.69,
-   "side": "Up",
-   "total_cost": 4.561177970000001,
-   "trade_id": "W000120",
-   "variant": "ride_favorite",
-   "window_start": 1794871500
-  },
-  {
-   "shares": 11.76,
-   "side": "Up",
-   "total_cost": 8.17592832,
-   "trade_id": "W000121",
-   "variant": "legacy_fixed",
-   "window_start": 1794871500
+   "shares": 5.0,
+   "side": "Down",
+   "total_cost": 2.48736,
+   "trade_id": "W000127",
+   "variant": "model_early",
+   "window_start": 1794872700
   },
   {
    "shares": 5.0,
-   "side": "Up",
-   "total_cost": 2.537465,
-   "trade_id": "W000122",
-   "variant": "main_minfill",
-   "window_start": 1794871500
-  },
-  {
-   "shares": 6.12,
-   "side": "Up",
-   "total_cost": 3.1058571600000002,
-   "trade_id": "W000123",
+   "side": "Down",
+   "total_cost": 2.48736,
+   "trade_id": "W000128",
    "variant": "blend_wide",
-   "window_start": 1794871500
+   "window_start": 1794872700
   },
   {
-   "shares": 15.62,
-   "side": "Up",
-   "total_cost": 5.23632384,
-   "trade_id": "W000124",
-   "variant": "model_early",
-   "window_start": 1794871800
+   "shares": 5.0,
+   "side": "Down",
+   "total_cost": 2.336625,
+   "trade_id": "W000129",
+   "variant": "main_minfill",
+   "window_start": 1794872700
   },
   {
-   "shares": 29.83,
-   "side": "Up",
-   "total_cost": 9.99997056,
-   "trade_id": "W000125",
+   "shares": 21.39,
+   "side": "Down",
+   "total_cost": 9.99608175,
+   "trade_id": "W000130",
    "variant": "legacy_fixed",
-   "window_start": 1794871800
+   "window_start": 1794872700
+  },
+  {
+   "shares": 5.35,
+   "side": "Up",
+   "total_cost": 3.0882768,
+   "trade_id": "W000131",
+   "variant": "main",
+   "window_start": 1794872700
+  },
+  {
+   "shares": 5.92,
+   "side": "Up",
+   "total_cost": 4.57478656,
+   "trade_id": "W000132",
+   "variant": "ride_favorite",
+   "window_start": 1794872700
   }
  ],
  "ptb": {
-  "1794868200": {
-   "p": 65281.94391666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1794868500": {
-   "p": 65266.49675,
-   "src": "own_spot_samples_60s"
-  },
-  "1794868800": {
-   "p": 65257.581,
-   "src": "own_spot_samples_60s"
-  },
-  "1794869100": {
-   "p": 65443.01358333333,
-   "src": "own_spot_samples_60s"
-  },
   "1794869400": {
    "p": 65360.45341666667,
    "src": "own_spot_samples_60s"
@@ -101,9 +85,25 @@
   "1794871800": {
    "p": 65134.23725,
    "src": "own_spot_samples_60s"
+  },
+  "1794872100": {
+   "p": 64991.35833333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1794872400": {
+   "p": 64824.89708333334,
+   "src": "own_spot_samples_60s"
+  },
+  "1794872700": {
+   "p": 64807.64516666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1794873000": {
+   "p": 64856.31658333333,
+   "src": "own_spot_samples_60s"
   }
  },
- "seq": 125,
+ "seq": 132,
  "traded_windows": {
   "blend_wide": [
    1794857700,
@@ -127,7 +127,8 @@
    1794869400,
    1794869700,
    1794870900,
-   1794871500
+   1794871500,
+   1794872700
   ],
   "legacy_fixed": [
    1794857700,
@@ -162,7 +163,9 @@
    1794870600,
    1794870900,
    1794871500,
-   1794871800
+   1794871800,
+   1794872400,
+   1794872700
   ],
   "main": [
    1794859500,
@@ -170,7 +173,8 @@
    1794863100,
    1794865500,
    1794865800,
-   1794868500
+   1794868500,
+   1794872700
   ],
   "main_minfill": [
    1794857700,
@@ -190,7 +194,8 @@
    1794869400,
    1794869700,
    1794870900,
-   1794871500
+   1794871500,
+   1794872700
   ],
   "model_early": [
    1794857700,
@@ -212,7 +217,8 @@
    1794869700,
    1794870600,
    1794870900,
-   1794871800
+   1794871800,
+   1794872700
   ],
   "ride_favorite": [
    1794857700,
@@ -240,7 +246,8 @@
    1794870000,
    1794870600,
    1794870900,
-   1794871500
+   1794871500,
+   1794872700
   ]
  }
 }

@@ -1,54 +1,5 @@
 {
- "open": [
-  {
-   "shares": 9.75,
-   "side": "Up",
-   "total_cost": 4.16259675,
-   "trade_id": "W000011",
-   "variant": "model_early",
-   "window_start": 1794859500
-  },
-  {
-   "shares": 23.42,
-   "side": "Up",
-   "total_cost": 9.99877086,
-   "trade_id": "W000012",
-   "variant": "legacy_fixed",
-   "window_start": 1794859500
-  },
-  {
-   "shares": 5.0,
-   "side": "Up",
-   "total_cost": 2.4371849999999995,
-   "trade_id": "W000013",
-   "variant": "blend_wide",
-   "window_start": 1794859500
-  },
-  {
-   "shares": 5.0,
-   "side": "Up",
-   "total_cost": 2.38694,
-   "trade_id": "W000014",
-   "variant": "main_minfill",
-   "window_start": 1794859500
-  },
-  {
-   "shares": 7.69,
-   "side": "Up",
-   "total_cost": 3.12716157,
-   "trade_id": "W000015",
-   "variant": "main",
-   "window_start": 1794859500
-  },
-  {
-   "shares": 5.62,
-   "side": "Down",
-   "total_cost": 4.558944,
-   "trade_id": "W000016",
-   "variant": "ride_favorite",
-   "window_start": 1794859500
-  }
- ],
+ "open": [],
  "ptb": {
   "1794857700": {
    "p": 64789.34333333333,
@@ -69,37 +20,59 @@
   "1794859500": {
    "p": 65014.043333333335,
    "src": "coinbase_1m_typical t=1794859440"
+  },
+  "1794859800": {
+   "p": 65043.22666666666,
+   "src": "coinbase_1m_typical t=1794859740"
+  },
+  "1794860100": {
+   "p": 64979.20366666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1794860400": {
+   "p": 65013.532,
+   "src": "own_spot_samples_60s"
+  },
+  "1794860700": {
+   "p": 64940.43041666667,
+   "src": "own_spot_samples_60s"
   }
  },
- "seq": 16,
+ "seq": 22,
  "traded_windows": {
   "blend_wide": [
    1794857700,
    1794858000,
-   1794859500
+   1794859500,
+   1794860100
   ],
   "legacy_fixed": [
    1794857700,
    1794858000,
    1794858300,
-   1794859500
+   1794859500,
+   1794860100
   ],
   "main": [
-   1794859500
+   1794859500,
+   1794860100
   ],
   "main_minfill": [
    1794857700,
-   1794859500
+   1794859500,
+   1794860100
   ],
   "model_early": [
    1794857700,
    1794858000,
-   1794859500
+   1794859500,
+   1794860100
   ],
   "ride_favorite": [
    1794857700,
    1794858000,
-   1794859500
+   1794859500,
+   1794860100
   ]
  }
 }

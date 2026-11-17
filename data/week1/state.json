@@ -3,69 +3,85 @@
   {
    "shares": 5.0,
    "side": "Down",
-   "total_cost": 2.48736,
-   "trade_id": "W000127",
-   "variant": "model_early",
-   "window_start": 1794872700
-  },
-  {
-   "shares": 5.0,
-   "side": "Down",
-   "total_cost": 2.48736,
-   "trade_id": "W000128",
-   "variant": "blend_wide",
-   "window_start": 1794872700
-  },
-  {
-   "shares": 5.0,
-   "side": "Down",
-   "total_cost": 2.336625,
-   "trade_id": "W000129",
+   "total_cost": 2.2862400000000003,
+   "trade_id": "W000147",
    "variant": "main_minfill",
-   "window_start": 1794872700
+   "window_start": 1794873900
   },
   {
-   "shares": 21.39,
+   "shares": 6.81,
    "side": "Down",
-   "total_cost": 9.99608175,
-   "trade_id": "W000130",
+   "total_cost": 3.11385888,
+   "trade_id": "W000148",
+   "variant": "model_early",
+   "window_start": 1794873900
+  },
+  {
+   "shares": 5.0,
+   "side": "Down",
+   "total_cost": 2.2862400000000003,
+   "trade_id": "W000149",
+   "variant": "blend_wide",
+   "window_start": 1794873900
+  },
+  {
+   "shares": 21.86,
+   "side": "Down",
+   "total_cost": 9.99544128,
+   "trade_id": "W000150",
    "variant": "legacy_fixed",
-   "window_start": 1794872700
+   "window_start": 1794873900
   },
   {
-   "shares": 5.35,
-   "side": "Up",
-   "total_cost": 3.0882768,
-   "trade_id": "W000131",
-   "variant": "main",
-   "window_start": 1794872700
-  },
-  {
-   "shares": 5.92,
-   "side": "Up",
-   "total_cost": 4.57478656,
-   "trade_id": "W000132",
+   "shares": 6.33,
+   "side": "Down",
+   "total_cost": 4.58553429,
+   "trade_id": "W000151",
    "variant": "ride_favorite",
-   "window_start": 1794872700
+   "window_start": 1794873900
+  },
+  {
+   "shares": 6.52,
+   "side": "Down",
+   "total_cost": 3.11256976,
+   "trade_id": "W000152",
+   "variant": "main",
+   "window_start": 1794873900
+  },
+  {
+   "shares": 6.25,
+   "side": "Down",
+   "total_cost": 4.1008000000000004,
+   "trade_id": "W000153",
+   "variant": "model_early",
+   "window_start": 1794874200
+  },
+  {
+   "shares": 15.24,
+   "side": "Down",
+   "total_cost": 9.999390720000001,
+   "trade_id": "W000154",
+   "variant": "legacy_fixed",
+   "window_start": 1794874200
+  },
+  {
+   "shares": 5.0,
+   "side": "Down",
+   "total_cost": 2.9357849999999996,
+   "trade_id": "W000155",
+   "variant": "main_minfill",
+   "window_start": 1794874200
+  },
+  {
+   "shares": 5.0,
+   "side": "Down",
+   "total_cost": 2.9357849999999996,
+   "trade_id": "W000156",
+   "variant": "blend_wide",
+   "window_start": 1794874200
   }
  ],
  "ptb": {
-  "1794869400": {
-   "p": 65360.45341666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1794869700": {
-   "p": 65328.399,
-   "src": "own_spot_samples_60s"
-  },
-  "1794870000": {
-   "p": 65264.182916666665,
-   "src": "own_spot_samples_60s"
-  },
-  "1794870300": {
-   "p": 65164.906500000005,
-   "src": "own_spot_samples_60s"
-  },
   "1794870600": {
    "p": 65243.337166666664,
    "src": "own_spot_samples_60s"
@@ -101,9 +117,25 @@
   "1794873000": {
    "p": 64856.31658333333,
    "src": "own_spot_samples_60s"
+  },
+  "1794873300": {
+   "p": 64842.05575000001,
+   "src": "own_spot_samples_60s"
+  },
+  "1794873600": {
+   "p": 64834.78241666666,
+   "src": "own_spot_samples_60s"
+  },
+  "1794873900": {
+   "p": 64689.706666666665,
+   "src": "own_spot_samples_60s"
+  },
+  "1794874200": {
+   "p": 64718.34558333333,
+   "src": "own_spot_samples_60s"
   }
  },
- "seq": 132,
+ "seq": 156,
  "traded_windows": {
   "blend_wide": [
    1794857700,
@@ -128,7 +160,12 @@
    1794869700,
    1794870900,
    1794871500,
-   1794872700
+   1794872700,
+   1794873000,
+   1794873300,
+   1794873600,
+   1794873900,
+   1794874200
   ],
   "legacy_fixed": [
    1794857700,
@@ -165,7 +202,11 @@
    1794871500,
    1794871800,
    1794872400,
-   1794872700
+   1794872700,
+   1794873000,
+   1794873600,
+   1794873900,
+   1794874200
   ],
   "main": [
    1794859500,
@@ -174,7 +215,10 @@
    1794865500,
    1794865800,
    1794868500,
-   1794872700
+   1794872700,
+   1794873000,
+   1794873300,
+   1794873900
   ],
   "main_minfill": [
    1794857700,
@@ -195,7 +239,12 @@
    1794869700,
    1794870900,
    1794871500,
-   1794872700
+   1794872700,
+   1794873000,
+   1794873300,
+   1794873600,
+   1794873900,
+   1794874200
   ],
   "model_early": [
    1794857700,
@@ -218,7 +267,11 @@
    1794870600,
    1794870900,
    1794871800,
-   1794872700
+   1794872700,
+   1794873000,
+   1794873600,
+   1794873900,
+   1794874200
   ],
   "ride_favorite": [
    1794857700,
@@ -247,7 +300,10 @@
    1794870600,
    1794870900,
    1794871500,
-   1794872700
+   1794872700,
+   1794873000,
+   1794873300,
+   1794873900
   ]
  }
 }

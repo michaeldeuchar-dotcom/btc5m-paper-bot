@@ -266,7 +266,13 @@ def cycle(state: dict, accepting: bool) -> None:
             _reason("[all] Skipping: Tweak 1 SKIP_FIRST_MINUTE is on and this window is in its first 60 seconds.")
         return
     traded = state.setdefault("traded_windows", {})
-    todo = {n: v for n, v in variants.items() if ws not in traded.get(n, [])
+    spos = state.setdefault("scale_pos", {})
+
+    def _scale_open(n):  # scale_in may add to its own position later in the same round
+        pos = spos.get(n)
+        return bool(pos) and int(pos.get("ws", 0)) == ws
+
+    todo = {n: v for n, v in variants.items() if (ws not in traded.get(n, []) or (v.get("mode") == "scale" and _scale_open(n)))
             and float(v.get("min_secs_left", 0)) - 3 <= secs_left <= float(v.get("max_secs_left", 300)) + 3}
     if not todo:
         return
@@ -280,12 +286,32 @@ def cycle(state: dict, accepting: bool) -> None:
     obs = own_twap(ws + config.WINDOW_SECONDS - 60, now, min_n=3) if secs_left <= 60 else None
     p_up = strategy.p_up_model(spot, ptb, secs_left, vol, obs)
     _stats["evals"] += 1
+    trend = feeds.trend_signals()  # cached 30s, one candle call; never raises
+    tk = ("*", ws, "trend")
+    if tk not in _reason_seen:  # record the trend read once per window for every variant to compare later
+        _reason_seen.add(tk)
+        log.info("TREND window=%s %s", ws, feeds.trend_summary(trend))
     for name, v in todo.items():
         block = hour_filter_blocks(name)
         if block:
             d = strategy.Decision(name, "skip", "hour_filter", f"Tweak 2 HOUR_FILTER: {block}.", model_p_up=p_up)
         else:
-            d = strategy.decide(name, v, p_model=p_up, books=books, secs_left=secs_left)
+            if v.get("mode") == "scale" and _scale_open(name):
+                d = strategy.decide_scale_add(name, v, spos[name], books=books, secs_left=secs_left, spot=spot, ptb=ptb, now=now)
+                d.model_p_up = p_up
+            else:
+                d = strategy.decide(name, v, p_model=p_up, books=books, secs_left=secs_left, trend=trend, spot=spot)
+        if d.action == "buy" and v.get("mode") == "scale":
+            pos = spos.get(name) if _scale_open(name) else None
+            spent = sum(float(f["cost"]) for f in pos["fills"]) if pos else 0.0
+            if spent + d.total_cost > config.STAKE_HARD_MAX_USD + 1e-9:
+                log.error("REFUSED [%s] round total $%.2f would exceed $10", name, spent + d.total_cost)
+                d = strategy.Decision(name, "skip", "round_cap", "Round total would exceed $10.", model_p_up=p_up)
+            else:
+                if pos is None:
+                    pos = spos[name] = {"ws": ws, "side": d.side, "fills": []}
+                gap = (spot - ptb) if d.side == "Up" else (ptb - spot)
+                pos["fills"].append({"ts": now, "ask": d.ask, "gap": gap, "cost": d.total_cost})
         if d.action == "buy":
             paper_fill(state, name, d, m, ws, secs_left, spot, ptb, ptb_src, vol)
         else:

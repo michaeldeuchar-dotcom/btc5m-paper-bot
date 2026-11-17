@@ -23,6 +23,12 @@ else
   echo "no data branch yet; starting fresh"
 fi
 rm -f data/week1/heartbeat.json data/week1/*.pid STOP
+# append tweak notes committed on main (tweaks/*.md) to the run's TWEAKS_LOG once each
+for t in tweaks/*.md; do
+  [ -f "$t" ] || continue
+  marker=$(head -n 1 "$t")
+  grep -qF "$marker" data/TWEAKS_LOG.md 2>/dev/null || { printf '\n' >> data/TWEAKS_LOG.md; cat "$t" >> data/TWEAKS_LOG.md; echo "tweak note added: $t"; }
+done
 if [ -f data/week1/FINISHED ]; then echo "run already FINISHED"; exit 0; fi
 
 save() {

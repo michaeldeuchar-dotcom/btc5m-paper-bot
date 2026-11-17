@@ -1,63 +1,6 @@
 {
- "open": [
-  {
-   "shares": 5.0,
-   "side": "Down",
-   "total_cost": 2.9357849999999996,
-   "trade_id": "W000218",
-   "variant": "model_early",
-   "window_start": 1794881100
-  },
-  {
-   "shares": 5.0,
-   "side": "Down",
-   "total_cost": 2.9357849999999996,
-   "trade_id": "W000219",
-   "variant": "blend_wide",
-   "window_start": 1794881100
-  },
-  {
-   "shares": 12.28,
-   "side": "Down",
-   "total_cost": 7.210287959999999,
-   "trade_id": "W000220",
-   "variant": "legacy_fixed",
-   "window_start": 1794881100
-  },
-  {
-   "shares": 5.0,
-   "side": "Down",
-   "total_cost": 2.68736,
-   "trade_id": "W000221",
-   "variant": "main_minfill",
-   "window_start": 1794881100
-  },
-  {
-   "shares": 8.51,
-   "side": "Up",
-   "total_cost": 4.14808887,
-   "trade_id": "W000222",
-   "variant": "legacy_fixed",
-   "window_start": 1794881400
-  }
- ],
+ "open": [],
  "ptb": {
-  "1794877800": {
-   "p": 64639.22051724138,
-   "src": "own_spot_samples_60s"
-  },
-  "1794878100": {
-   "p": 64612.10558333333,
-   "src": "own_spot_samples_60s"
-  },
-  "1794878400": {
-   "p": 64592.80825,
-   "src": "own_spot_samples_60s"
-  },
-  "1794878700": {
-   "p": 64570.09683333334,
-   "src": "own_spot_samples_60s"
-  },
   "1794879000": {
    "p": 64547.65833333333,
    "src": "own_spot_samples_60s"
@@ -93,9 +36,25 @@
   "1794881400": {
    "p": 64771.70083333333,
    "src": "own_spot_samples_60s"
+  },
+  "1794881700": {
+   "p": 64616.90533333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1794882000": {
+   "p": 64651.30366666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1794882300": {
+   "p": 64560.94233333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1794882600": {
+   "p": 64357.06316666667,
+   "src": "own_spot_samples_60s"
   }
  },
- "seq": 222,
+ "seq": 224,
  "traded_windows": {
   "blend_wide": [
    1794857700,
@@ -140,7 +99,6 @@
    1794881100
   ],
   "legacy_fixed": [
-   1794860100,
    1794861000,
    1794861600,
    1794861900,
@@ -189,7 +147,8 @@
    1794879000,
    1794879900,
    1794881100,
-   1794881400
+   1794881400,
+   1794881700
   ],
   "main": [
    1794859500,
@@ -325,7 +284,8 @@
    1794878100,
    1794878400,
    1794878700,
-   1794879000
+   1794879000,
+   1794881700
   ]
  }
 }

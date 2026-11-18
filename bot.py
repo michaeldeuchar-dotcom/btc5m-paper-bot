@@ -19,7 +19,7 @@ import signal
 import sys
 import threading
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
 import config
@@ -81,7 +81,7 @@ def load_variants(force: bool = False) -> dict:
             raw = json.loads(config.VARIANTS_PATH.read_text())
             data = {k: v for k, v in raw.items() if not k.startswith("_") and isinstance(v, dict) and v.get("enabled", True)}
             for k, v in data.items():  # hard ceiling, regardless of the file
-                for key in ("base_stake", "max_stake", "high_ask_max_stake", "max_round_up_usd"):
+                for key in ("base_stake", "max_stake", "high_ask_max_stake", "max_round_up_usd", "max_loss_per_bet"):
                     if float(v.get(key, 0) or 0) > config.STAKE_HARD_MAX_USD:
                         log.warning("variant %s %s=%s clipped to $%.0f hard max", k, key, v[key], config.STAKE_HARD_MAX_USD)
                         v[key] = config.STAKE_HARD_MAX_USD
@@ -158,6 +158,143 @@ def hour_filter_blocks(variant: str) -> str | None:
     return msg
 
 
+# ---------------------------------------------------------------- scale modes + loss cooldown (breakout_scale)
+SCALE_MODES = ("scale", "breakout_scale", "trend_scale")
+
+
+def cooldown_blocks(state: dict, name: str, v: dict, ws: int, now: float):
+    """After a losing round, skip the next `cooldown_skips` qualifying setups AND at least `cooldown_min` minutes
+    (whichever is longer). Called only when a setup already passed every entry filter. Returns the reason or None."""
+    if not v.get("cooldown_skips") and not v.get("cooldown_min"):
+        return None
+    cd = state.setdefault("cooldown", {}).get(name)
+    if not cd:
+        return None
+    left = int(cd.get("skips_left", 0))
+    counted = cd.setdefault("counted_ws", [])
+    if left > 0 and ws not in counted:
+        counted.append(ws)
+        cd["skips_left"] = left = left - 1  # this qualifying setup is one of the skips
+    mins_left = (float(cd.get("until", 0)) - now) / 60.0
+    if left <= 0 and mins_left <= 0:
+        state["cooldown"].pop(name, None)
+        log.info("COOLDOWN over for [%s]", name)
+        return None
+    return (f"Cooldown after a losing round: {left} more qualifying setup(s) to skip and "
+            f"{max(mins_left, 0):.0f} more minute(s); skipping this setup.")
+
+
+def start_cooldown(state: dict, name: str, v: dict, ws: int, now: float) -> None:
+    if not v.get("cooldown_skips") and not v.get("cooldown_min"):
+        return
+    cds = state.setdefault("cooldown", {})
+    if cds.get(name, {}).get("loss_ws") == ws:
+        return  # both pieces of the same lost round
+    cds[name] = {"skips_left": int(v.get("cooldown_skips", 2)), "until": now + 60 * float(v.get("cooldown_min", 15)),
+                 "loss_ws": ws, "counted_ws": []}
+    log.info("COOLDOWN started for [%s] after a losing round: skip next %s setups and at least %s min",
+             name, v.get("cooldown_skips", 2), v.get("cooldown_min", 15))
+
+
+# ---------------------------------------------------------------- meta variant (copies the recent leader)
+def variant_scores(variants: dict, now: float, exclude: str, hours: float = 3.0, min_bets: int = 5) -> dict:
+    """{variant: (return_fraction, n_bets, net_pnl)} over settled bets filled in the last `hours`. Excludes `exclude`."""
+    out = {}
+    cutoff = now - hours * 3600
+    for n in variants:
+        if n == exclude:
+            continue
+        pnl = cost = 0.0
+        k = 0
+        for r in store.read_trades(n):
+            if r.get("status") != "resolved" or not r.get("pnl_usd"):
+                continue
+            try:
+                t = datetime.strptime(r["ts_fill_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc).timestamp()
+            except (ValueError, KeyError):
+                continue
+            if t >= cutoff:
+                pnl += float(r["pnl_usd"]); cost += float(r["total_cost_usd"]); k += 1
+        if k >= min_bets and cost > 0:
+            out[n] = (pnl / cost, k, pnl)
+    return out
+
+
+def meta_update_leader(state: dict, name: str, scores: dict, ws: int) -> dict:
+    """One check per 5-minute round. A new leader needs to be the best positive score at 2 straight checks."""
+    m = state.setdefault("meta", {"leader": None, "cand": None, "cand_n": 0, "last_check_ws": 0})
+    if m.get("last_check_ws") == ws:
+        return m
+    m["last_check_ws"] = ws
+    pos = {n: sc for n, sc in scores.items() if sc[0] > 0}
+    best = max(pos, key=lambda n: pos[n][0]) if pos else None
+    if best is None:
+        if m.get("leader") or m.get("cand"):
+            log.info("META: nobody is positive over 3h; sitting out (was leader=%s)", m.get("leader"))
+        m.update(leader=None, cand=None, cand_n=0)
+    elif best == m.get("leader"):
+        m.update(cand=None, cand_n=0)
+    else:
+        m["cand_n"] = int(m.get("cand_n", 0)) + 1 if m.get("cand") == best else 1
+        m["cand"] = best
+        if m["cand_n"] >= 2:
+            log.info("META: new leader %s (3h return %+.1f%% on %d bets) after 2 straight checks; was %s",
+                     best, pos[best][0] * 100, pos[best][1], m.get("leader"))
+            m.update(leader=best, cand=None, cand_n=0)
+    return m
+
+
+_meta_cache: dict = {}
+
+
+def meta_decide(state, name, v, variants, *, p_up, books, secs_left, trend, spot, ws, now):
+    D = lambda action, reason, english, **kw: strategy.Decision(name, action, reason, english, model_p_up=p_up, **kw)  # noqa: E731
+    c = _meta_cache.get(name)
+    if c and c[0] == ws:  # scores only change when bets settle; compute once per round, not every 2s
+        scores = c[1]
+    else:
+        scores = variant_scores(variants, now, exclude=name, hours=float(v.get("score_hours", 3)), min_bets=int(v.get("min_bets", 5)))
+        _meta_cache[name] = (ws, scores)
+    m = meta_update_leader(state, name, scores, ws)
+    if not any(sc[0] > 0 for sc in scores.values()):
+        return D("skip", "all_losing", "No other variant is positive over the last 3 hours (with 5+ settled bets); sitting out.")
+    leader = m.get("leader")
+    if not leader or leader not in scores or scores[leader][0] <= 0:
+        why = f"waiting for a leader (candidate {m.get('cand')} has led {m.get('cand_n')} of 2 checks)" if m.get("cand") else "no stable leader yet"
+        return D("skip", "no_leader", f"No confirmed leader: {why}.")
+    ranked = sorted((n for n, sc in scores.items() if sc[0] > 0 and n != leader), key=lambda n: -scores[n][0])
+    order = [leader] + (ranked[:1] if v.get("fallback_to_second", True) else [])
+    notes = []
+    for rank, src in enumerate(order, 1):
+        ret, nb, pnl = scores[src]
+        sv = variants.get(src)
+        if sv is None:
+            continue
+        if hour_filter_blocks(src):
+            notes.append(f"#{rank} {src}: its hour filter blocks"); continue
+        dl = strategy.decide(src, sv, p_model=p_up, books=books, secs_left=secs_left, trend=trend, spot=spot)
+        if dl.action != "buy":
+            notes.append(f"#{rank} {src} not betting ({dl.reason})"); continue
+        stake = float(v.get("base_stake", 2)) + (1 if ret > 0.10 else 0) + (1 if ret > 0.20 else 0)
+        v2 = dict(v, mode="favorite", base_stake=stake)
+        st, sh, note = strategy.size_bet(v2, 0.0, dl.ask)
+        if sh + 1e-9 < config.MIN_ORDER_SHARES:
+            notes.append(f"#{rank} {src}: ${st:.2f} only buys {sh:.2f} shares (min 5)"); continue
+        book = books.get(dl.side)
+        if book is None or book.best_ask is None or book.best_ask_size + 1e-9 < sh:
+            notes.append(f"#{rank} {src}: book too thin"); continue
+        ask = float(book.best_ask); fps = strategy.fee_per_share(ask)
+        notional, fee = sh * ask, sh * fps
+        if notional + fee > min(float(v.get("max_loss_per_bet", 10)), config.STAKE_HARD_MAX_USD) + 1e-9:
+            notes.append(f"#{rank} {src}: cost over max_loss_per_bet"); continue
+        eng = (f"Copying #{rank} {src} (3h return {ret*100:+.1f}% on {nb} settled bets, net ${pnl:+.2f}): it would buy {dl.side} -- {dl.english} "
+               f"Meta size ${notional:.2f}+${fee:.2f} fee (base $2, +$1 over 10%, +$1 over 20%, max $4)." + (f" ({note})" if note else ""))
+        return strategy.Decision(name, "buy", "ok", eng, side=dl.side, est_prob=dl.est_prob, model_p_up=p_up, market_p_up=dl.market_p_up,
+                                 ask=ask, ask_size=book.best_ask_size, fee_ps=fps, edge=dl.edge, stake=st, shares=sh, notional=notional,
+                                 fee=fee, total_cost=notional + fee, extra={"copied": src, "note": note})
+    return D("skip", "leader_idle", f"Leader {leader} ({scores[leader][0]*100:+.1f}% over 3h) isn't betting this round" + (": " + "; ".join(notes) if notes else "") + ".")
+
+
 # ---------------------------------------------------------------- resolution
 _last_resolve = [0.0]
 
@@ -193,6 +330,10 @@ def resolve_open(state: dict, force: bool = False) -> None:
             "cumulative_pnl_usd": f"{prior + pnl:.6f}",
             "official_ptb": (m.meta or {}).get("priceToBeat", ""), "official_final": (m.meta or {}).get("finalPrice", ""),
         })
+        if not won:
+            vcfg = (_variants.get("data") or {}).get(item["variant"]) or {}
+            if vcfg.get("mode") in SCALE_MODES + ("meta",) and (vcfg.get("cooldown_skips") or vcfg.get("cooldown_min")):
+                start_cooldown(state, item["variant"], vcfg, ws, time.time())
         log.info("RESOLVED [%s] %s %s outcome=%s %s pnl=$%+.2f variant_total=$%+.2f",
                  item["variant"], item["trade_id"], item["side"], outcome, "WON" if won else "LOST", pnl, prior + pnl)
     state["open"] = still
@@ -272,7 +413,7 @@ def cycle(state: dict, accepting: bool) -> None:
         pos = spos.get(n)
         return bool(pos) and int(pos.get("ws", 0)) == ws
 
-    todo = {n: v for n, v in variants.items() if (ws not in traded.get(n, []) or (v.get("mode") == "scale" and _scale_open(n)))
+    todo = {n: v for n, v in variants.items() if (ws not in traded.get(n, []) or (v.get("mode") in SCALE_MODES and _scale_open(n)))
             and float(v.get("min_secs_left", 0)) - 3 <= secs_left <= float(v.get("max_secs_left", 300)) + 3}
     if not todo:
         return
@@ -296,17 +437,27 @@ def cycle(state: dict, accepting: bool) -> None:
         if block:
             d = strategy.Decision(name, "skip", "hour_filter", f"Tweak 2 HOUR_FILTER: {block}.", model_p_up=p_up)
         else:
-            if v.get("mode") == "scale" and _scale_open(name):
+            if v.get("mode") == "meta":
+                d = meta_decide(state, name, v, variants, p_up=p_up, books=books, secs_left=secs_left, trend=trend, spot=spot, ws=ws, now=now)
+                if d.action == "buy":
+                    cd = cooldown_blocks(state, name, v, ws, now)
+                    if cd:
+                        d = strategy.Decision(name, "skip", "cooldown", cd + f" (would have copied {d.extra.get('copied')} {d.side})", side=d.side, model_p_up=p_up)
+            elif v.get("mode") in SCALE_MODES and _scale_open(name):
                 d = strategy.decide_scale_add(name, v, spos[name], books=books, secs_left=secs_left, spot=spot, ptb=ptb, now=now)
                 d.model_p_up = p_up
             else:
                 d = strategy.decide(name, v, p_model=p_up, books=books, secs_left=secs_left, trend=trend, spot=spot)
-        if d.action == "buy" and v.get("mode") == "scale":
+        if d.action == "buy" and v.get("mode") in SCALE_MODES:
             pos = spos.get(name) if _scale_open(name) else None
             spent = sum(float(f["cost"]) for f in pos["fills"]) if pos else 0.0
-            if spent + d.total_cost > config.STAKE_HARD_MAX_USD + 1e-9:
-                log.error("REFUSED [%s] round total $%.2f would exceed $10", name, spent + d.total_cost)
-                d = strategy.Decision(name, "skip", "round_cap", "Round total would exceed $10.", model_p_up=p_up)
+            rcap = min(float(v.get("round_cap", config.STAKE_HARD_MAX_USD)), float(v.get("max_loss_per_bet", config.STAKE_HARD_MAX_USD)), config.STAKE_HARD_MAX_USD)
+            cd = cooldown_blocks(state, name, v, ws, now) if pos is None else None
+            if cd:
+                d = strategy.Decision(name, "skip", "cooldown", cd, side=d.side, model_p_up=p_up)
+            elif spent + d.total_cost > rcap + 1e-9:
+                log.error("REFUSED [%s] round total $%.2f would exceed $%.0f", name, spent + d.total_cost, rcap)
+                d = strategy.Decision(name, "skip", "round_cap", f"Round total would exceed ${rcap:.0f}.", model_p_up=p_up)
             else:
                 if pos is None:
                     pos = spos[name] = {"ws": ws, "side": d.side, "fills": []}

@@ -93,10 +93,18 @@ def size_bet(v: dict, edge: float, ask: float) -> tuple[float, float, str]:
     # the $10 hard max covers the whole cost of the bet, including the taker fee
     hard_shares = math.floor(hard / (ask + fee_per_share(ask)) * 100) / 100
     shares = min(shares, hard_shares)
+    ml = v.get("max_loss_per_bet")
+    if ml is not None:  # explicit worst-case loss per bet (a loss costs the whole stake + fee); holds even if max_stake is raised
+        ml = min(float(ml), hard)
+        stake = min(stake, ml)
+        shares = min(shares, math.floor(ml / (ask + fee_per_share(ask)) * 100) / 100)
+    if v.get("cap_incl_fee"):  # max_stake applies to cost PLUS fee, not just the shares' price
+        shares = min(shares, math.floor(float(v.get("max_stake", 5)) / (ask + fee_per_share(ask)) * 100) / 100)
     note = ""
     if shares + 1e-9 < config.MIN_ORDER_SHARES and v.get("round_up_to_min_shares"):
         need = config.MIN_ORDER_SHARES * ask
-        if need + config.MIN_ORDER_SHARES * fee_per_share(ask) <= min(float(v.get("max_round_up_usd", 0)), hard) + 1e-9:
+        ru_cap = min(float(v.get("max_round_up_usd", 0)), hard, float(v["max_loss_per_bet"]) if ml is not None else hard)
+        if need + config.MIN_ORDER_SHARES * fee_per_share(ask) <= ru_cap + 1e-9:
             note = f"rounded ${stake:.2f} up to ${need:.2f} for the 5-share minimum"
             stake, shares = need, float(config.MIN_ORDER_SHARES)
     return stake, shares, note
@@ -120,6 +128,19 @@ def trend_direction(v: dict, sig: Optional[dict]) -> tuple[Optional[str], str, s
     if sig["structure"] != want:
         return None, "structure_conflict", (f"Momentum says {side} but price isn't making "
                                             f"{'higher highs and higher lows' if side == 'Up' else 'lower highs and lower lows'} (structure {sig['structure']}).")
+    steps_need = int(v.get("min_struct_steps", 0))
+    if steps_need:
+        got = sig["struct_up_steps"] if side == "Up" else sig["struct_dn_steps"]
+        if got < steps_need:
+            return None, "structure_weak", f"Structure not clean enough: only {got} of 3 chunk steps show {'higher highs and lows' if side == 'Up' else 'lower highs and lows'} (need {steps_need})."
+    if v.get("require_5m_agree") and (sig["ret5_pct"] > 0) != (side == "Up"):
+        return None, "momentum_conflict", f"Hour and 15 min say {side} but the last 5 min ({sig['ret5_pct']:+.2f}%) disagree."
+    if float(v.get("min_spike_ratio", 0)) > 0:
+        if sig["spike_ratio"] < float(v["min_spike_ratio"]):
+            return None, "no_spike", f"No volume spike: last 5 min volume is {sig['spike_ratio']:.1f}x the hour's 5-minute average (need {float(v['min_spike_ratio']):.1f}x)."
+        n_dir = sig["up5"] if side == "Up" else sig["dn5"]
+        if n_dir < int(v.get("min_spike_candles", 3)):
+            return None, "spike_wrong_way", f"Only {n_dir} of the last 5 candles closed {side} (need {int(v.get('min_spike_candles', 3))})."
     ratio = sig["up_vol_ratio"] if side == "Up" else sig["dn_vol_ratio"]
     if ratio < float(v.get("min_vol_ratio", 1.15)):
         return None, "volume_conflict", f"Volume doesn't back the {side} move: trend-direction candles average only {ratio:.2f}x the volume of opposite ones (need {float(v.get('min_vol_ratio', 1.15)):.2f}x)."
@@ -163,13 +184,26 @@ def decide(name: str, v: dict, *, p_model: float, books: dict, secs_left: float,
         return D("skip", "timing", f"Only bets with {v.get('min_secs_left')}-{v.get('max_secs_left')}s left; {secs_left:.0f}s left now.", **base)
 
     trend_why = ""
-    if v.get("mode") in ("trend", "breakout"):
-        if v.get("mode") == "trend":
+    if v.get("mode") in ("trend", "breakout", "guarded_favorite", "breakout_scale", "trend_scale"):
+        if v.get("mode") in ("trend", "guarded_favorite", "trend_scale"):
             tside, tcode, trend_why = trend_direction(v, trend)
         else:
             tside, tcode, trend_why = breakout_direction(v, trend, spot)
         if tside is None:
             return D("skip", tcode, trend_why, **base)
+        if v.get("mode") == "trend_scale" and secs_left < float(v.get("first_min_secs_left", 90)):
+            return D("skip", "timing", f"First ultimate bet needs {v.get('first_min_secs_left')}s+ left; {secs_left:.0f}s left now.", side=tside, **base)
+        if v.get("mode") == "breakout_scale":
+            if secs_left < float(v.get("first_min_secs_left", 120)):
+                return D("skip", "timing", f"First breakout_scale bet needs {v.get('first_min_secs_left')}s+ left; {secs_left:.0f}s left now.", **base)
+            if trend is None or (trend.get("mom15_z", 0) > 0) != (tside == "Up") or abs(trend.get("mom15_z", 0)) < float(v.get("min_mom15_z", 0.0)):
+                return D("skip", "trend_conflict", f"Breakout says {tside} but the last 15 min moved {trend.get('ret15_pct', 0):+.2f}%.", side=tside, **base)
+        if v.get("mode") == "guarded_favorite":
+            if m_up is None:
+                return D("skip", "no_book", "No prices in the order book.", **base)
+            fav = "Up" if m_up >= 0.5 else "Down"
+            if fav != tside:
+                return D("skip", "favorite_mismatch", f"Trend filters say {tside} but the market favorite is {fav} ({max(m_up, 1 - m_up)*100:.0f}c); sitting out.", **base)
         w = float(v.get("blend_market", 0.5))
         p = p_model if m_up is None else (1 - w) * p_model + w * m_up
         side = tside
@@ -233,6 +267,8 @@ def decide_scale_add(name: str, v: dict, pos: dict, *, books: dict, secs_left: f
     """scale_in add-on. pos = {"side","fills":[{"ts","ask","gap","cost"}]}. Whole round (all pieces, fees in) <= $10."""
     D = lambda action, reason, english, **kw: Decision(name, action, reason, english, **kw)  # noqa: E731
     side, fills = pos["side"], pos["fills"]
+    cap = min(float(v.get("round_cap", config.STAKE_HARD_MAX_USD)), float(v.get("max_loss_per_bet", config.STAKE_HARD_MAX_USD)),
+              config.STAKE_HARD_MAX_USD)  # whole-round limit incl. fees
     spent = sum(float(f["cost"]) for f in fills)
     last = fills[-1]
     gap = (spot - ptb) if side == "Up" else (ptb - spot)   # how far BTC is past the price to beat, our way
@@ -256,18 +292,18 @@ def decide_scale_add(name: str, v: dict, pos: dict, *, books: dict, secs_left: f
         return D("skip", "price_not_rising", f"{side} is {ask*100:.0f}c, not at least {float(v.get('add_min_ask_rise', 0.02))*100:.0f}c above the last fill ({float(last['ask'])*100:.0f}c).", **kw)
     if ask > float(v.get("add_max_ask", 0.9)):
         return D("skip", "ask_band", f"{side} at {ask*100:.0f}c is too expensive to add (max {float(v.get('add_max_ask', 0.9))*100:.0f}c).", **kw)
-    budget = min(float(v.get("add_stake", 3)), config.STAKE_HARD_MAX_USD - spent)
+    budget = min(float(v.get("add_stake", 3)), cap - spent)
     shares = math.floor(budget / (ask + fps) * 100) / 100
     if shares + 1e-9 < config.MIN_ORDER_SHARES:
-        if config.MIN_ORDER_SHARES * (ask + fps) <= config.STAKE_HARD_MAX_USD - spent + 1e-9:
+        if config.MIN_ORDER_SHARES * (ask + fps) <= cap - spent + 1e-9:
             shares = float(config.MIN_ORDER_SHARES)
         else:
-            return D("skip", "round_cap", f"Round already has ${spent:.2f} in; 5 more shares would push it over $10.", **kw)
+            return D("skip", "round_cap", f"Round already has ${spent:.2f} in; 5 more shares would push it over ${cap:.0f}.", **kw)
     if book.best_ask_size + 1e-9 < shares:
         return D("skip", "thin_book", f"Only {book.best_ask_size:.1f} shares offered at {ask*100:.0f}c; need {shares:.2f}.", **kw)
     notional, fee = shares * ask, shares * fps
-    if spent + notional + fee > config.STAKE_HARD_MAX_USD + 1e-9:
-        return D("skip", "round_cap", "Add would push the round over $10 with fees.", **kw)
+    if spent + notional + fee > cap + 1e-9:
+        return D("skip", "round_cap", f"Add would push the round over ${cap:.0f} with fees.", **kw)
     return D("buy", "ok", f"Adding ${notional:.2f} of {side} (add #{len(fills)}): BTC now ${gap:+.0f} past the price to beat (was ${float(last['gap']):+.0f}), "
              f"{side} up to {ask*100:.0f}c from {float(last['ask'])*100:.0f}c; round total ${spent + notional + fee:.2f} incl. fees.",
              stake=notional, shares=shares, notional=notional, fee=fee, total_cost=notional + fee, **kw)

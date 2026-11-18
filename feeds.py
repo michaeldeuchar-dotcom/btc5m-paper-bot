@@ -130,6 +130,13 @@ def compute_trend(rows: list, lookback: int = 60, n_chunks: int = 4) -> dict:
     avg_all = statistics.mean(float(r[5]) for r in body)
     avg_up = statistics.mean(up_vol) if up_vol else 0.0
     avg_dn = statistics.mean(dn_vol) if dn_vol else 0.0
+    # spike read (trend_spike): last 5 finished minutes vs the hour's average 5-minute volume
+    last5 = body[-5:]
+    vol5 = sum(float(r[5]) for r in last5)
+    spike_ratio = vol5 / (avg_all * 5) if avg_all > 0 else 0.0
+    up5 = sum(1 for r in last5 if float(r[4]) > float(r[3]))
+    dn5 = sum(1 for r in last5 if float(r[4]) < float(r[3]))
+    ret5 = math.log(closes[-1] / closes[-6]) if len(closes) > 6 else 0.0
     # breakout read: did one of the last 2 finished minutes close beyond the prior 30-min range on heavy volume?
     prior, last2 = body[-32:-2], body[-2:]
     range_hi = max(float(r[2]) for r in prior)
@@ -137,7 +144,8 @@ def compute_trend(rows: list, lookback: int = 60, n_chunks: int = 4) -> dict:
     avg_vol_prior = statistics.mean(float(r[5]) for r in prior) or 1e-9
     bo_up = [float(r[5]) / avg_vol_prior for r in last2 if float(r[4]) > range_hi]
     bo_dn = [float(r[5]) / avg_vol_prior for r in last2 if float(r[4]) < range_lo]
-    return {"ok": True, "range_hi": range_hi, "range_lo": range_lo, "bo_up_vol": max(bo_up, default=0.0),
+    return {"ok": True, "spike_ratio": spike_ratio, "up5": up5, "dn5": dn5, "ret5_pct": ret5 * 100,
+            "struct_up_steps": min(hh, hlow), "struct_dn_steps": min(lh, ll), "range_hi": range_hi, "range_lo": range_lo, "bo_up_vol": max(bo_up, default=0.0),
             "bo_dn_vol": max(bo_dn, default=0.0), "ret60_pct": ret60 * 100, "ret15_pct": ret15 * 100, "mom_z": mom_z, "mom15_z": mom15_z,
             "efficiency": efficiency, "ann_vol": ann_vol, "structure": structure,
             "hh": hh, "hl": hlow, "lh": lh, "ll": ll, "avg_vol": avg_all,
@@ -169,5 +177,6 @@ def trend_summary(sig: dict) -> str:
         return f"trend n/a ({(sig or {}).get('why', 'none')})"
     return (f"60m {sig['ret60_pct']:+.2f}% (z {sig['mom_z']:+.1f}), 15m {sig['ret15_pct']:+.2f}% (z {sig['mom15_z']:+.1f}), "
             f"structure {sig['structure']} (HH{sig['hh']} HL{sig['hl']} LH{sig['lh']} LL{sig['ll']}), "
+            f"5m {sig['ret5_pct']:+.2f}%, spike {sig['spike_ratio']:.1f}x ({sig['up5']}up/{sig['dn5']}dn of last 5), "
             f"vol up/down {sig['up_vol_ratio']:.2f}x, chop-eff {sig['efficiency']:.2f}, ann vol {sig['ann_vol']:.0%}, "
             f"30m range {sig['range_lo']:.0f}-{sig['range_hi']:.0f} breakout vol up {sig['bo_up_vol']:.1f}x / down {sig['bo_dn_vol']:.1f}x")

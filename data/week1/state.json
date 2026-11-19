@@ -18,46 +18,13 @@
   }
  },
  "meta": {
-  "cand": "scale_in",
-  "cand_n": 1,
-  "last_check_ws": 1795077300,
-  "leader": null
+  "cand": null,
+  "cand_n": 0,
+  "last_check_ws": 1795078500,
+  "leader": "scale_in"
  },
- "open": [
-  {
-   "shares": 5.0,
-   "side": "Down",
-   "total_cost": 2.48736,
-   "trade_id": "W001545",
-   "variant": "model_early",
-   "window_start": 1795077300
-  },
-  {
-   "shares": 5.0,
-   "side": "Up",
-   "total_cost": 2.78694,
-   "trade_id": "W001546",
-   "variant": "main_minfill",
-   "window_start": 1795077300
-  }
- ],
+ "open": [],
  "ptb": {
-  "1795073700": {
-   "p": 63492.123999999996,
-   "src": "own_spot_samples_60s"
-  },
-  "1795074000": {
-   "p": 63539.082,
-   "src": "own_spot_samples_60s"
-  },
-  "1795074300": {
-   "p": 63542.650499999996,
-   "src": "own_spot_samples_60s"
-  },
-  "1795074600": {
-   "p": 63579.23791666667,
-   "src": "own_spot_samples_60s"
-  },
   "1795074900": {
    "p": 63645.19258333334,
    "src": "own_spot_samples_60s"
@@ -92,6 +59,22 @@
   },
   "1795077300": {
    "p": 63621.931833333336,
+   "src": "own_spot_samples_60s"
+  },
+  "1795077600": {
+   "p": 63620.448333333334,
+   "src": "own_spot_samples_60s"
+  },
+  "1795077900": {
+   "p": 63549.573749999996,
+   "src": "own_spot_samples_60s"
+  },
+  "1795078200": {
+   "p": 63514.45175,
+   "src": "own_spot_samples_60s"
+  },
+  "1795078500": {
+   "p": 63607.41958333333,
    "src": "own_spot_samples_60s"
   }
  },
@@ -133,7 +116,7 @@
    "ws": 1795064100
   }
  },
- "seq": 1546,
+ "seq": 1548,
  "traded_windows": {
   "blend_wide": [
    1794994200,
@@ -478,8 +461,6 @@
    1795075800
   ],
   "model_early": [
-   1794994800,
-   1795000200,
    1795000800,
    1795001400,
    1795002300,
@@ -527,7 +508,9 @@
    1795066200,
    1795075800,
    1795076400,
-   1795077300
+   1795077300,
+   1795077900,
+   1795078200
   ],
   "ride_favorite": [
    1794992700,

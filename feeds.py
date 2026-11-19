@@ -144,7 +144,11 @@ def compute_trend(rows: list, lookback: int = 60, n_chunks: int = 4) -> dict:
     avg_vol_prior = statistics.mean(float(r[5]) for r in prior) or 1e-9
     bo_up = [float(r[5]) / avg_vol_prior for r in last2 if float(r[4]) > range_hi]
     bo_dn = [float(r[5]) / avg_vol_prior for r in last2 if float(r[4]) < range_lo]
-    return {"ok": True, "spike_ratio": spike_ratio, "up5": up5, "dn5": dn5, "ret5_pct": ret5 * 100,
+    # breaker reads: last-30-minute high-low range as % of price, and last-15-minute volume vs the hour's pace
+    last30 = body[-30:]
+    range30_pct = (max(float(r[2]) for r in last30) - min(float(r[1]) for r in last30)) / closes[-1] * 100
+    vol15_ratio = (sum(float(r[5]) for r in body[-15:]) / (avg_all * 15)) if avg_all > 0 else 0.0
+    return {"ok": True, "range30_pct": range30_pct, "vol15_ratio": vol15_ratio, "spike_ratio": spike_ratio, "up5": up5, "dn5": dn5, "ret5_pct": ret5 * 100,
             "struct_up_steps": min(hh, hlow), "struct_dn_steps": min(lh, ll), "range_hi": range_hi, "range_lo": range_lo, "bo_up_vol": max(bo_up, default=0.0),
             "bo_dn_vol": max(bo_dn, default=0.0), "ret60_pct": ret60 * 100, "ret15_pct": ret15 * 100, "mom_z": mom_z, "mom15_z": mom15_z,
             "efficiency": efficiency, "ann_vol": ann_vol, "structure": structure,

@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
 import config
+import breaker
 import feeds
 import polymarket
 import store
@@ -247,7 +248,7 @@ def meta_update_leader(state: dict, name: str, scores: dict, ws: int) -> dict:
 _meta_cache: dict = {}
 
 
-def meta_decide(state, name, v, variants, *, p_up, books, secs_left, trend, spot, ws, now):
+def meta_decide(state, name, v, variants, *, p_up, books, secs_left, trend, spot, ws, now, ptb=None):
     D = lambda action, reason, english, **kw: strategy.Decision(name, action, reason, english, model_p_up=p_up, **kw)  # noqa: E731
     c = _meta_cache.get(name)
     if c and c[0] == ws:  # scores only change when bets settle; compute once per round, not every 2s
@@ -263,7 +264,10 @@ def meta_decide(state, name, v, variants, *, p_up, books, secs_left, trend, spot
         why = f"waiting for a leader (candidate {m.get('cand')} has led {m.get('cand_n')} of 2 checks)" if m.get("cand") else "no stable leader yet"
         return D("skip", "no_leader", f"No confirmed leader: {why}.")
     ranked = sorted((n for n, sc in scores.items() if sc[0] > 0 and n != leader), key=lambda n: -scores[n][0])
-    order = [leader] + (ranked[:1] if v.get("fallback_to_second", True) else [])
+    if v.get("try_all_positive"):  # Nov 19: walk EVERY positive-scoring variant in rank order (leader first), not just leader + #2
+        order = [leader] + ranked
+    else:
+        order = [leader] + (ranked[:1] if v.get("fallback_to_second", True) else [])
     notes = []
     for rank, src in enumerate(order, 1):
         ret, nb, pnl = scores[src]
@@ -272,9 +276,13 @@ def meta_decide(state, name, v, variants, *, p_up, books, secs_left, trend, spot
             continue
         if hour_filter_blocks(src):
             notes.append(f"#{rank} {src}: its hour filter blocks"); continue
-        dl = strategy.decide(src, sv, p_model=p_up, books=books, secs_left=secs_left, trend=trend, spot=spot)
+        dl = strategy.decide(src, sv, p_model=p_up, books=books, secs_left=secs_left, trend=trend, spot=spot, ptb=ptb)
         if dl.action != "buy":
             notes.append(f"#{rank} {src} not betting ({dl.reason})"); continue
+        if v.get("min_lead_usd") is not None:
+            ld = strategy.lead_usd(dl.side, spot, ptb)
+            if ld is None or ld < float(v["min_lead_usd"]):
+                notes.append(f"#{rank} {src}: head start only {'n/a' if ld is None else f'${ld:+.0f}'} (meta needs ${float(v['min_lead_usd']):.0f})"); continue
         stake = float(v.get("base_stake", 2)) + (1 if ret > 0.10 else 0) + (1 if ret > 0.20 else 0)
         v2 = dict(v, mode="favorite", base_stake=stake)
         st, sh, note = strategy.size_bet(v2, 0.0, dl.ask)
@@ -288,7 +296,7 @@ def meta_decide(state, name, v, variants, *, p_up, books, secs_left, trend, spot
         if notional + fee > min(float(v.get("max_loss_per_bet", 10)), config.STAKE_HARD_MAX_USD) + 1e-9:
             notes.append(f"#{rank} {src}: cost over max_loss_per_bet"); continue
         eng = (f"Copying #{rank} {src} (3h return {ret*100:+.1f}% on {nb} settled bets, net ${pnl:+.2f}): it would buy {dl.side} -- {dl.english} "
-               f"Meta size ${notional:.2f}+${fee:.2f} fee (base $2, +$1 over 10%, +$1 over 20%, max $4)." + (f" ({note})" if note else ""))
+               f"Meta size ${notional:.2f}+${fee:.2f} fee (base ${float(v.get('base_stake', 2)):.0f}, max ${float(v.get('max_stake', 4)):.0f})." + (f" ({note})" if note else ""))
         return strategy.Decision(name, "buy", "ok", eng, side=dl.side, est_prob=dl.est_prob, model_p_up=p_up, market_p_up=dl.market_p_up,
                                  ask=ask, ask_size=book.best_ask_size, fee_ps=fps, edge=dl.edge, stake=st, shares=sh, notional=notional,
                                  fee=fee, total_cost=notional + fee, extra={"copied": src, "note": note})
@@ -432,13 +440,16 @@ def cycle(state: dict, accepting: bool) -> None:
     if tk not in _reason_seen:  # record the trend read once per window for every variant to compare later
         _reason_seen.add(tk)
         log.info("TREND window=%s %s", ws, feeds.trend_summary(trend))
+    brk = state.setdefault("breaker", breaker.new_state())
+    for e in breaker.update(brk, trend, ws, now):
+        log.info("%s [straightness/range/volume read from the last hour of 1-min candles]", e)
     for name, v in todo.items():
         block = hour_filter_blocks(name)
         if block:
             d = strategy.Decision(name, "skip", "hour_filter", f"Tweak 2 HOUR_FILTER: {block}.", model_p_up=p_up)
         else:
             if v.get("mode") == "meta":
-                d = meta_decide(state, name, v, variants, p_up=p_up, books=books, secs_left=secs_left, trend=trend, spot=spot, ws=ws, now=now)
+                d = meta_decide(state, name, v, variants, p_up=p_up, books=books, secs_left=secs_left, trend=trend, spot=spot, ws=ws, now=now, ptb=ptb)
                 if d.action == "buy":
                     cd = cooldown_blocks(state, name, v, ws, now)
                     if cd:
@@ -447,7 +458,24 @@ def cycle(state: dict, accepting: bool) -> None:
                 d = strategy.decide_scale_add(name, v, spos[name], books=books, secs_left=secs_left, spot=spot, ptb=ptb, now=now)
                 d.model_p_up = p_up
             else:
-                d = strategy.decide(name, v, p_model=p_up, books=books, secs_left=secs_left, trend=trend, spot=spot)
+                d = strategy.decide(name, v, p_model=p_up, books=books, secs_left=secs_left, trend=trend, spot=spot, ptb=ptb)
+        # chop circuit breaker: only ever touches NEW bets (never adds to an already-open scale position)
+        bmode = v.get("circuit_breaker", "watch")
+        if d.action == "buy" and brk.get("on") and bmode in ("block", "watch") and not (v.get("mode") in SCALE_MODES and _scale_open(name)):
+            lk = (name, ws, "breaker_log")
+            first_time = lk not in _reason_seen
+            if first_time:
+                _reason_seen.add(lk)
+                key = "blocked" if bmode == "block" else "would_block"
+                brk[key][name] = int(brk[key].get(name, 0)) + 1
+                log.info("BREAKER %s [%s] would buy %s at %.2f with %.0fs left (window %s); breaker on since %s, last read %s",
+                         "BLOCKED" if bmode == "block" else "WOULD-BLOCK (watch only, bet still placed)", name, d.side, d.ask or 0,
+                         secs_left, ws, store.iso_pt(float(brk.get("since") or now)), brk.get("last"))
+            if bmode == "block":
+                d = strategy.Decision(name, "skip", "breaker", f"Circuit breaker ON (market choppy); new bets paused. Would have bought {d.side} at {(d.ask or 0)*100:.0f}c.",
+                                      side=d.side, ask=d.ask, model_p_up=p_up)
+            else:
+                d.english += " [circuit breaker was ON; watch-only, so this bet was still placed]"
         if d.action == "buy" and v.get("mode") in SCALE_MODES:
             pos = spos.get(name) if _scale_open(name) else None
             spent = sum(float(f["cost"]) for f in pos["fills"]) if pos else 0.0
@@ -484,14 +512,18 @@ def cycle(state: dict, accepting: bool) -> None:
 def heartbeat(state: dict, cycles: int, force_log: bool, last_log: list) -> None:
     now = time.time()
     hb = {"ts": now, "ts_pt": store.iso_pt(now), "pid": os.getpid(), "cycles": cycles, "open": len(state.get("open", [])),
-          "last_spot": _samples[-1][1] if _samples else None, "stats": dict(_stats)}
+          "last_spot": _samples[-1][1] if _samples else None, "stats": dict(_stats),
+          "breaker": {k: state.get("breaker", {}).get(k) for k in ("on", "choppy_run", "clean_run", "trips", "checks", "last", "blocked", "would_block")}}
     tmp = config.HEARTBEAT_PATH.with_suffix(".tmp")
     tmp.write_text(json.dumps(hb))
     os.replace(tmp, config.HEARTBEAT_PATH)
     if force_log or now - last_log[0] >= config.HEARTBEAT_EVERY_SEC:
         last_log[0] = now
-        log.info("HEARTBEAT pid=%s cycles=%d spot=%s open_bets=%d fills=%d spot_ok=%d spot_fail=%d errors=%d",
-                 os.getpid(), cycles, hb["last_spot"], hb["open"], _stats["fills"], _stats["spot_ok"], _stats["spot_fail"], _stats["errors"])
+        bb = state.get("breaker") or {}
+        log.info("HEARTBEAT pid=%s cycles=%d spot=%s open_bets=%d fills=%d spot_ok=%d spot_fail=%d errors=%d breaker=%s(choppy_run=%s clean_run=%s trips=%s blocked=%s would_block=%s)",
+                 os.getpid(), cycles, hb["last_spot"], hb["open"], _stats["fills"], _stats["spot_ok"], _stats["spot_fail"], _stats["errors"],
+                 "ON" if bb.get("on") else "off", bb.get("choppy_run", 0), bb.get("clean_run", 0), bb.get("trips", 0),
+                 sum((bb.get("blocked") or {}).values()), sum((bb.get("would_block") or {}).values()))
 
 
 COV_PATH = config.DATA_DIR / "coverage.json"

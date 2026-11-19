@@ -1,8 +1,8 @@
 {
-  "_note": "Paper-only strategy variants run side by side on the same live data. Edit and save; the bot reloads within a minute and logs the change. Stakes above $10 are clipped in code.",
+  "_note": "Paper-only strategy variants run side by side on the same live data. Edit and save; the bot reloads within a minute and logs the change. Stakes above $10 are clipped in code. 'circuit_breaker': 'block' skips NEW bets while the chop breaker is ON; 'watch' (the default) only logs/marks what it would have blocked.",
   "main": {
     "enabled": true,
-    "desc": "Headline bot: model blended 50/50 with market price, 4c min edge, only 90-240s left, asks 20-80c, $1 +$1 per 2c extra edge, cap $10, cap $2 when ask >70c",
+    "desc": "Headline bot (tuned Nov 19): blend 50/50 model+market, 4c min edge, ONLY with 180-240s left AND BTC already $30+ past the price to beat our way, asks 20-80c, $1 +$1 per 2c extra edge, cap $10, cap $2 when ask >70c. Chop circuit breaker blocks new bets.",
     "blend_market": 0.5,
     "min_edge": 0.04,
     "edge_per_dollar": 0.02,
@@ -12,14 +12,16 @@
     "high_ask_max_stake": 2,
     "min_ask": 0.2,
     "max_ask": 0.8,
-    "min_secs_left": 90,
+    "min_secs_left": 180,
     "max_secs_left": 240,
     "round_up_to_min_shares": false,
-    "max_round_up_usd": 0
+    "max_round_up_usd": 0,
+    "min_lead_usd": 30,
+    "circuit_breaker": "block"
   },
   "main_minfill": {
     "enabled": true,
-    "desc": "Same as main, but if the edge-sized bet is under the 5-share minimum, round up to 5 shares when that costs $3 or less",
+    "desc": "Same as main (tuned Nov 19): 180-240s left, BTC $25+ past the price to beat; rounds up to the 5-share minimum when that costs $3 or less. Circuit breaker is WATCH-ONLY here (control for the breaker A/B).",
     "blend_market": 0.5,
     "min_edge": 0.04,
     "edge_per_dollar": 0.02,
@@ -29,14 +31,16 @@
     "high_ask_max_stake": 2,
     "min_ask": 0.2,
     "max_ask": 0.8,
-    "min_secs_left": 90,
+    "min_secs_left": 180,
     "max_secs_left": 240,
     "round_up_to_min_shares": true,
-    "max_round_up_usd": 3
+    "max_round_up_usd": 3,
+    "min_lead_usd": 25,
+    "circuit_breaker": "watch"
   },
   "model_early": {
     "enabled": true,
-    "desc": "Pure price model (no market blend), needs 8c edge, only 120-240s left (backtest's best pocket), cap $10",
+    "desc": "Pure price model (no market blend), needs 8c edge (tuned Nov 19): ONLY 180-240s left AND BTC $30+ past the price to beat our way, cap $10. Chop circuit breaker blocks new bets.",
     "blend_market": 0.0,
     "min_edge": 0.08,
     "edge_per_dollar": 0.02,
@@ -46,14 +50,16 @@
     "high_ask_max_stake": 2,
     "min_ask": 0.1,
     "max_ask": 0.9,
-    "min_secs_left": 120,
+    "min_secs_left": 180,
     "max_secs_left": 240,
     "round_up_to_min_shares": true,
-    "max_round_up_usd": 3
+    "max_round_up_usd": 3,
+    "min_lead_usd": 30,
+    "circuit_breaker": "block"
   },
   "blend_wide": {
     "enabled": true,
-    "desc": "Blend model+market, lower 3c edge, any time from 30s to 240s left, cap $10",
+    "desc": "Blend model+market, 3c edge (tuned Nov 19): 180-240s left (was 30-240s), BTC $25+ past the price to beat, cap $10. Chop circuit breaker blocks new bets.",
     "blend_market": 0.5,
     "min_edge": 0.03,
     "edge_per_dollar": 0.02,
@@ -63,10 +69,12 @@
     "high_ask_max_stake": 2,
     "min_ask": 0.1,
     "max_ask": 0.9,
-    "min_secs_left": 30,
+    "min_secs_left": 180,
     "max_secs_left": 240,
     "round_up_to_min_shares": true,
-    "max_round_up_usd": 3
+    "max_round_up_usd": 3,
+    "min_lead_usd": 25,
+    "circuit_breaker": "block"
   },
   "legacy_fixed": {
     "enabled": true,
@@ -87,18 +95,19 @@
   },
   "ride_favorite": {
     "enabled": true,
-    "desc": "Like trading by hand: buy whichever side the market favors at 70-85c with 60-120s left, flat $10 (raised from $4.50 on Nov 16; shares capped so cost+fee <= $10), no model",
+    "desc": "Ride the favorite (tuned Nov 19): buy whichever side the market favors, but ONLY at 80-85c with 60-120s left, flat $5 (was 70-85c and $10), no model. Circuit breaker is WATCH-ONLY (replay showed blocking it hurt).",
     "mode": "favorite",
-    "base_stake": 10,
-    "max_stake": 10,
+    "base_stake": 5,
+    "max_stake": 5,
     "high_ask": 1.0,
-    "high_ask_max_stake": 10,
-    "min_ask": 0.7,
+    "high_ask_max_stake": 5,
+    "min_ask": 0.8,
     "max_ask": 0.85,
     "min_secs_left": 60,
     "max_secs_left": 120,
     "round_up_to_min_shares": false,
-    "max_round_up_usd": 0
+    "max_round_up_usd": 0,
+    "circuit_breaker": "watch"
   },
   "trend_volume": {
     "enabled": true,
@@ -241,8 +250,8 @@
     "max_round_up_usd": 4
   },
   "breakout_scale": {
-    "enabled": true,
-    "desc": "Breakout + scale: breakout signal (1-min close past the prior 30-min high/low on >=2x average volume, price still past it) AND scale_in's confirmation (last 15 min same way, >=3c edge after fee on the 50/50 model+market blend, asks 30-75c, 120-240s left). $2 +$1 per 2c extra edge. May add once (BTC $15+ further past the price to beat and our side up 2c+, 60s+ left); round total incl. fees <= $5. After a losing round: skip next 2 qualifying setups AND at least 15 min, whichever is longer",
+    "enabled": false,
+    "desc": "PAUSED Nov 19 (history kept; no new bets): 4 of 8 bets won, net -$6, 0 for 3 on Nov 19; its parent `breakout` already covers the signal. Breakout + scale: breakout signal (1-min close past the prior 30-min high/low on >=2x average volume, price still past it) AND scale_in's confirmation (last 15 min same way, >=3c edge after fee on the 50/50 model+market blend, asks 30-75c, 120-240s left). $2 +$1 per 2c extra edge. May add once (BTC $15+ further past the price to beat and our side up 2c+, 60s+ left); round total incl. fees <= $5. After a losing round: skip next 2 qualifying setups AND at least 15 min, whichever is longer",
     "mode": "breakout_scale",
     "blend_market": 0.5,
     "trend_bonus": 0.0,
@@ -273,8 +282,8 @@
     "cooldown_min": 15
   },
   "ultimate": {
-    "enabled": true,
-    "desc": "Ultimate: ALL trend_volume filters (hour momentum + same 15-min direction, higher highs/lows or lower/lower, with-trend volume >=1.15x, chop and volatility skips), trend direction only. >=3c edge after fee (50/50 blend + 3c trend bonus), asks 30-75c, 90-240s left. $2 +$1 per 2c extra edge. One add on scale_in's rule (BTC $15+ further past the price to beat, our side up 2c+, 60s+ left); round incl. fees <= $5; max_loss_per_bet 10 enforced. After a losing round: skip next 2 qualifying setups AND at least 15 min, whichever is longer",
+    "enabled": false,
+    "desc": "PAUSED Nov 19 (history kept; no new bets): 6 of 18 bets won, net -$22 vs trend_volume running the same filters. Ultimate: ALL trend_volume filters (hour momentum + same 15-min direction, higher highs/lows or lower/lower, with-trend volume >=1.15x, chop and volatility skips), trend direction only. >=3c edge after fee (50/50 blend + 3c trend bonus), asks 30-75c, 90-240s left. $2 +$1 per 2c extra edge. One add on scale_in's rule (BTC $15+ further past the price to beat, our side up 2c+, 60s+ left); round incl. fees <= $5; max_loss_per_bet 10 enforced. After a losing round: skip next 2 qualifying setups AND at least 15 min, whichever is longer",
     "mode": "trend_scale",
     "blend_market": 0.5,
     "trend_bonus": 0.03,
@@ -310,13 +319,13 @@
   },
   "meta": {
     "enabled": true,
-    "desc": "Meta: copies the recent leader. Scores every other active variant by 3-hour return (net P&L / dollars bet, needs 5+ settled bets); the best positive one leads once it has led 2 straight checks (one per round). If the leader's rules say bet, meta copies that side at its own size ($2, +$1 if leader's 3h return >10%, +$1 more if >20%, max $4 incl. fee); else falls back to the #2 positive variant if it fires. Sits out when nobody is positive. Loss cooldown: skip next 2 qualifying setups AND 15 min. max_loss_per_bet 10",
+    "desc": "Meta (fixed Nov 19): scores every other active variant by 6-hour return (net P&L / dollars bet, needs 5+ settled bets). The best positive one leads once it has led 2 straight checks; meta tries the leader, then EVERY other positive variant in rank order, skipping any that is hour-filtered or not betting this round, and copies the first that fires -- but only if BTC is already $30+ past the price to beat that way. Flat ~$2 (5-share minimum may round up to $4 incl. fee), max_loss_per_bet 10. Loss cooldown: skip next 2 qualifying setups AND 15 min. Circuit breaker blocks new bets.",
     "mode": "meta",
-    "score_hours": 3,
+    "score_hours": 6,
     "min_bets": 5,
     "fallback_to_second": true,
     "base_stake": 2,
-    "max_stake": 4,
+    "max_stake": 2,
     "cap_incl_fee": true,
     "max_loss_per_bet": 10,
     "min_secs_left": 30,
@@ -324,6 +333,9 @@
     "round_up_to_min_shares": true,
     "max_round_up_usd": 4,
     "cooldown_skips": 2,
-    "cooldown_min": 15
+    "cooldown_min": 15,
+    "try_all_positive": true,
+    "min_lead_usd": 30,
+    "circuit_breaker": "block"
   }
 }

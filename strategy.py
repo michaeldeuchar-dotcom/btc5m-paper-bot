@@ -171,8 +171,15 @@ def breakout_direction(v: dict, sig: Optional[dict], spot: Optional[float]) -> t
     return None, "no_breakout", f"Price is inside its 30-min range (${lo:,.0f}-${hi:,.0f}); no breakout."
 
 
+def lead_usd(side: Optional[str], spot: Optional[float], ptb: Optional[float]) -> Optional[float]:
+    """How many dollars BTC is already past the price to beat, in our direction (negative = against us)."""
+    if side is None or not spot or not ptb:
+        return None
+    return (spot - ptb) if side == "Up" else (ptb - spot)
+
+
 def decide(name: str, v: dict, *, p_model: float, books: dict, secs_left: float, trend: Optional[dict] = None,
-           spot: Optional[float] = None) -> Decision:
+           spot: Optional[float] = None, ptb: Optional[float] = None) -> Decision:
     D = lambda action, reason, english, **kw: Decision(name, action, reason, english, **kw)  # noqa: E731
     up, down = books.get("Up"), books.get("Down")
     m_up = _mid(up)
@@ -232,6 +239,12 @@ def decide(name: str, v: dict, *, p_model: float, books: dict, secs_left: float,
         p = p_model if m_up is None else (1 - w) * p_model + w * m_up
         side = "Up" if p >= 0.5 else "Down"
         est = p if side == "Up" else 1 - p
+    if v.get("min_lead_usd") is not None:  # head-start gate (Nov 19): only bet once BTC is already this far past the price to beat our way
+        ld = lead_usd(side, spot, ptb)
+        if ld is None or ld < float(v["min_lead_usd"]):
+            have = "unknown" if ld is None else f"${ld:+.0f}"
+            return D("skip", "lead_small", f"Head-start gate: BTC is {have} past the price to beat on the {side} side; need at least ${float(v['min_lead_usd']):.0f}.",
+                     side=side, est_prob=est, **base)
     book = up if side == "Up" else down
     if book is None or book.best_ask is None:
         return D("skip", "no_ask", f"Nobody is selling {side} right now.", side=side, est_prob=est, **base)

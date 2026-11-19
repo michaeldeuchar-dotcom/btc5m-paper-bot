@@ -1,28 +1,29 @@
 {
  "breaker": {
   "blocked": {
-   "meta": 1
+   "meta": 2
   },
-  "checks": 33,
+  "checks": 37,
   "choppy_run": 0,
-  "clean_run": 1,
+  "clean_run": 0,
   "last": {
    "choppy": false,
-   "clean": true,
+   "clean": false,
    "flags": 0,
-   "range30_pct": 1.04,
-   "straight": 0.214,
-   "vol15_ratio": 1.03,
-   "ws": 1795124400
+   "range30_pct": 0.544,
+   "straight": 0.182,
+   "vol15_ratio": 0.94,
+   "ws": 1795125600
   },
-  "last_ws": 1795124400,
+  "last_ws": 1795125600,
   "on": true,
   "since": 1795122061.8616252,
   "trips": 2,
   "would_block": {
    "breakout": 1,
+   "guarded_favorite": 1,
    "scale_in": 1,
-   "trend_volume": 3
+   "trend_volume": 6
   }
  },
  "cooldown": {
@@ -36,44 +37,20 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795124400,
+  "last_check_ws": 1795125600,
   "leader": "guarded_favorite"
  },
  "open": [
   {
-   "shares": 5.0,
+   "shares": 6.66,
    "side": "Down",
-   "total_cost": 2.38694,
-   "trade_id": "W001727",
+   "total_cost": 2.095902,
+   "trade_id": "W001732",
    "variant": "trend_volume",
-   "window_start": 1795124400
-  },
-  {
-   "shares": 6.52,
-   "side": "Down",
-   "total_cost": 3.11256976,
-   "trade_id": "W001728",
-   "variant": "scale_in",
-   "window_start": 1795124400
+   "window_start": 1795125600
   }
  ],
  "ptb": {
-  "1795120800": {
-   "p": 62013.794499999996,
-   "src": "own_spot_samples_60s"
-  },
-  "1795121100": {
-   "p": 62046.35091666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795121400": {
-   "p": 62084.78866666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795121700": {
-   "p": 62225.86775,
-   "src": "own_spot_samples_60s"
-  },
   "1795122000": {
    "p": 62029.84008333333,
    "src": "own_spot_samples_60s"
@@ -108,6 +85,22 @@
   },
   "1795124400": {
    "p": 61503.30183333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795124700": {
+   "p": 61573.12775,
+   "src": "own_spot_samples_60s"
+  },
+  "1795125000": {
+   "p": 61447.83866666666,
+   "src": "own_spot_samples_60s"
+  },
+  "1795125300": {
+   "p": 61497.1485,
+   "src": "own_spot_samples_60s"
+  },
+  "1795125600": {
+   "p": 61485.35725,
    "src": "own_spot_samples_60s"
   }
  },
@@ -149,7 +142,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1728,
+ "seq": 1732,
  "traded_windows": {
   "blend_wide": [
    1795010700,
@@ -315,7 +308,8 @@
    1795108500,
    1795118100,
    1795118400,
-   1795120200
+   1795120200,
+   1795125300
   ],
   "legacy_fixed": [
    1795033800,
@@ -684,9 +678,6 @@
    1795102800
   ],
   "trend_volume": [
-   1794907200,
-   1794918000,
-   1794918300,
    1794930300,
    1794930600,
    1794934800,
@@ -733,7 +724,10 @@
    1795120200,
    1795123200,
    1795123500,
-   1795124400
+   1795124400,
+   1795125000,
+   1795125300,
+   1795125600
   ],
   "ultimate": [
    1794990900,

@@ -1,19 +1,19 @@
 {
  "breaker": {
   "blocked": {},
-  "checks": 5,
+  "checks": 9,
   "choppy_run": 0,
-  "clean_run": 0,
+  "clean_run": 3,
   "last": {
    "choppy": false,
-   "clean": false,
-   "flags": 1,
-   "range30_pct": 0.587,
-   "straight": 0.123,
-   "vol15_ratio": 0.93,
-   "ws": 1795116000
+   "clean": true,
+   "flags": 0,
+   "range30_pct": 0.596,
+   "straight": 0.255,
+   "vol15_ratio": 1.32,
+   "ws": 1795117200
   },
-  "last_ws": 1795116000,
+  "last_ws": 1795117200,
   "on": true,
   "since": 1795115760.8594556,
   "trips": 1,
@@ -34,29 +34,13 @@
   }
  },
  "meta": {
-  "cand": "ride_favorite",
-  "cand_n": 1,
-  "last_check_ws": 1795116000,
-  "leader": "legacy_fixed"
+  "cand": null,
+  "cand_n": 0,
+  "last_check_ws": 1795117200,
+  "leader": "ride_favorite"
  },
  "open": [],
  "ptb": {
-  "1795112400": {
-   "p": 62803.788166666665,
-   "src": "own_spot_samples_60s"
-  },
-  "1795112700": {
-   "p": 62918.64041666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795113000": {
-   "p": 63216.17358333334,
-   "src": "own_spot_samples_60s"
-  },
-  "1795113300": {
-   "p": 63199.48208333333,
-   "src": "own_spot_samples_60s"
-  },
   "1795113600": {
    "p": 63163.8501724138,
    "src": "own_spot_samples_60s"
@@ -91,6 +75,22 @@
   },
   "1795116000": {
    "p": 62627.337166666664,
+   "src": "own_spot_samples_60s"
+  },
+  "1795116300": {
+   "p": 62705.48825,
+   "src": "own_spot_samples_60s"
+  },
+  "1795116600": {
+   "p": 62785.60241666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1795116900": {
+   "p": 62547.746666666666,
+   "src": "own_spot_samples_60s"
+  },
+  "1795117200": {
+   "p": 62507.46441666667,
    "src": "own_spot_samples_60s"
   }
  },

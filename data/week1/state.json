@@ -1,22 +1,22 @@
 {
  "breaker": {
   "blocked": {},
-  "checks": 21,
-  "choppy_run": 0,
+  "checks": 25,
+  "choppy_run": 3,
   "clean_run": 0,
   "last": {
-   "choppy": false,
+   "choppy": true,
    "clean": false,
-   "flags": 0,
-   "range30_pct": 1.175,
-   "straight": 0.197,
-   "vol15_ratio": 1.73,
-   "ws": 1795120800
+   "flags": 2,
+   "range30_pct": 0.963,
+   "straight": 0.057,
+   "vol15_ratio": 0.51,
+   "ws": 1795122000
   },
-  "last_ws": 1795120800,
-  "on": false,
-  "since": null,
-  "trips": 1,
+  "last_ws": 1795122000,
+  "on": true,
+  "since": 1795122061.8616252,
+  "trips": 2,
   "would_block": {}
  },
  "cooldown": {
@@ -25,58 +25,16 @@
    "loss_ws": 1795107900,
    "skips_left": 2,
    "until": 1795109162.9887636
-  },
-  "meta": {
-   "counted_ws": [
-    1795120200,
-    1795120500
-   ],
-   "loss_ws": 1795119900,
-   "skips_left": 0,
-   "until": 1795121232.421537
   }
  },
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795120800,
+  "last_check_ws": 1795122000,
   "leader": "guarded_favorite"
  },
- "open": [
-  {
-   "shares": 5.0,
-   "side": "Up",
-   "total_cost": 2.9357849999999996,
-   "trade_id": "W001720",
-   "variant": "model_early",
-   "window_start": 1795120800
-  },
-  {
-   "shares": 10.52,
-   "side": "Up",
-   "total_cost": 6.176891639999999,
-   "trade_id": "W001721",
-   "variant": "legacy_fixed",
-   "window_start": 1795120800
-  }
- ],
+ "open": [],
  "ptb": {
-  "1795117200": {
-   "p": 62507.46441666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795117500": {
-   "p": 62507.62715517241,
-   "src": "own_spot_samples_60s"
-  },
-  "1795117800": {
-   "p": 62482.07491666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795118100": {
-   "p": 62366.17330357143,
-   "src": "own_spot_samples_60s"
-  },
   "1795118400": {
    "p": 62265.937999999995,
    "src": "own_spot_samples_60s"
@@ -111,6 +69,22 @@
   },
   "1795120800": {
    "p": 62013.794499999996,
+   "src": "own_spot_samples_60s"
+  },
+  "1795121100": {
+   "p": 62046.35091666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1795121400": {
+   "p": 62084.78866666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1795121700": {
+   "p": 62225.86775,
+   "src": "own_spot_samples_60s"
+  },
+  "1795122000": {
+   "p": 62029.84008333333,
    "src": "own_spot_samples_60s"
   }
  },
@@ -158,7 +132,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1721,
+ "seq": 1723,
  "traded_windows": {
   "blend_wide": [
    1795010700,
@@ -326,7 +300,6 @@
    1795120200
   ],
   "legacy_fixed": [
-   1795033500,
    1795033800,
    1795034100,
    1795034700,
@@ -375,7 +348,8 @@
    1795119900,
    1795120200,
    1795120500,
-   1795120800
+   1795120800,
+   1795121100
   ],
   "main": [
    1794859500,
@@ -480,7 +454,6 @@
    1795104900
   ],
   "meta": [
-   1794994500,
    1795002300,
    1795002600,
    1795003800,
@@ -529,7 +502,8 @@
    1795113000,
    1795113300,
    1795114200,
-   1795119900
+   1795119900,
+   1795121100
   ],
   "model_early": [
    1795018800,

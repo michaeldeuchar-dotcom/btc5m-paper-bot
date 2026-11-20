@@ -3,34 +3,34 @@
   "blocked": {
    "blend_wide": 1,
    "main": 2,
-   "meta": 8,
+   "meta": 9,
    "model_early": 2
   },
-  "checks": 233,
+  "checks": 237,
   "choppy_run": 0,
   "clean_run": 0,
   "last": {
    "choppy": false,
    "clean": false,
    "flags": 1,
-   "range30_pct": 0.314,
-   "straight": 0.136,
-   "vol15_ratio": 1.1,
-   "ws": 1795184400
+   "range30_pct": 0.716,
+   "straight": 0.142,
+   "vol15_ratio": 1.73,
+   "ws": 1795185600
   },
-  "last_ws": 1795184400,
+  "last_ws": 1795185600,
   "on": true,
   "since": 1795152061.9361541,
   "trips": 5,
   "would_block": {
-   "breakout": 4,
-   "guarded_favorite": 3,
+   "breakout": 5,
+   "guarded_favorite": 4,
    "legacy_fixed": 15,
    "main_minfill": 2,
    "ride_favorite": 16,
    "scale_in": 25,
    "trend_spike": 1,
-   "trend_volume": 21
+   "trend_volume": 24
   }
  },
  "cooldown": {
@@ -44,27 +44,11 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795184400,
+  "last_check_ws": 1795185600,
   "leader": "trend_volume"
  },
  "open": [],
  "ptb": {
-  "1795180800": {
-   "p": 61553.78091666666,
-   "src": "own_spot_samples_60s"
-  },
-  "1795181100": {
-   "p": 61416.60283333333,
-   "src": "own_spot_samples_60s"
-  },
-  "1795181400": {
-   "p": 61461.49733333333,
-   "src": "own_spot_samples_60s"
-  },
-  "1795181700": {
-   "p": 61320.98383333334,
-   "src": "own_spot_samples_60s"
-  },
   "1795182000": {
    "p": 61330.37933333333,
    "src": "own_spot_samples_60s"
@@ -99,6 +83,22 @@
   },
   "1795184400": {
    "p": 61839.0395,
+   "src": "own_spot_samples_60s"
+  },
+  "1795184700": {
+   "p": 61964.89575,
+   "src": "own_spot_samples_60s"
+  },
+  "1795185000": {
+   "p": 62051.974583333336,
+   "src": "own_spot_samples_60s"
+  },
+  "1795185300": {
+   "p": 61793.0875,
+   "src": "own_spot_samples_60s"
+  },
+  "1795185600": {
+   "p": 61747.21791666667,
    "src": "own_spot_samples_60s"
   }
  },
@@ -140,7 +140,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1828,
+ "seq": 1833,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -229,7 +229,8 @@
    1795123200,
    1795138800,
    1795147800,
-   1795173000
+   1795173000,
+   1795184700
   ],
   "breakout_scale": [
    1795004400,
@@ -313,7 +314,8 @@
    1795125300,
    1795140600,
    1795141800,
-   1795176600
+   1795176600,
+   1795185300
   ],
   "legacy_fixed": [
    1795090200,
@@ -683,9 +685,6 @@
    1795176600
   ],
   "trend_volume": [
-   1795018800,
-   1795019400,
-   1795019700,
    1795029300,
    1795029600,
    1795045800,
@@ -732,7 +731,10 @@
    1795175100,
    1795175400,
    1795175700,
-   1795176600
+   1795176600,
+   1795184700,
+   1795185000,
+   1795185300
   ],
   "ultimate": [
    1794990900,

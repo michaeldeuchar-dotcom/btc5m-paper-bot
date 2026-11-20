@@ -1,34 +1,34 @@
 {
  "breaker": {
   "blocked": {
-   "blend_wide": 1,
+   "blend_wide": 2,
    "main": 2,
    "meta": 10,
-   "model_early": 2
+   "model_early": 3
   },
-  "checks": 241,
+  "checks": 245,
   "choppy_run": 0,
-  "clean_run": 0,
+  "clean_run": 3,
   "last": {
    "choppy": false,
-   "clean": false,
-   "flags": 1,
-   "range30_pct": 1.289,
-   "straight": 0.039,
-   "vol15_ratio": 2.03,
-   "ws": 1795186800
+   "clean": true,
+   "flags": 0,
+   "range30_pct": 2.869,
+   "straight": 0.334,
+   "vol15_ratio": 1.94,
+   "ws": 1795188000
   },
-  "last_ws": 1795186800,
+  "last_ws": 1795188000,
   "on": true,
   "since": 1795152061.9361541,
   "trips": 5,
   "would_block": {
-   "breakout": 6,
+   "breakout": 8,
    "guarded_favorite": 4,
-   "legacy_fixed": 16,
-   "main_minfill": 2,
+   "legacy_fixed": 20,
+   "main_minfill": 3,
    "ride_favorite": 16,
-   "scale_in": 26,
+   "scale_in": 28,
    "trend_spike": 1,
    "trend_volume": 25
   }
@@ -44,44 +44,52 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795186800,
+  "last_check_ws": 1795188000,
   "leader": null
  },
  "open": [
   {
-   "shares": 5.63,
+   "shares": 6.57,
    "side": "Up",
-   "total_cost": 4.07844519,
-   "trade_id": "W001836",
+   "total_cost": 5.07708576,
+   "trade_id": "W001843",
    "variant": "legacy_fixed",
-   "window_start": 1795186800
+   "window_start": 1795188000
   },
   {
    "shares": 5.0,
    "side": "Up",
-   "total_cost": 3.427385,
-   "trade_id": "W001837",
+   "total_cost": 2.8862400000000004,
+   "trade_id": "W001844",
+   "variant": "main_minfill",
+   "window_start": 1795188000
+  },
+  {
+   "shares": 5.0,
+   "side": "Down",
+   "total_cost": 3.37854,
+   "trade_id": "W001845",
+   "variant": "breakout",
+   "window_start": 1795188000
+  },
+  {
+   "shares": 5.0,
+   "side": "Down",
+   "total_cost": 3.6220649999999996,
+   "trade_id": "W001846",
    "variant": "scale_in",
-   "window_start": 1795186800
+   "window_start": 1795188000
+  },
+  {
+   "shares": 5.0,
+   "side": "Down",
+   "total_cost": 4.24704,
+   "trade_id": "W001847",
+   "variant": "scale_in",
+   "window_start": 1795188000
   }
  ],
  "ptb": {
-  "1795183200": {
-   "p": 61799.19141666666,
-   "src": "own_spot_samples_60s"
-  },
-  "1795183500": {
-   "p": 61780.14358333334,
-   "src": "own_spot_samples_60s"
-  },
-  "1795183800": {
-   "p": 61866.101833333334,
-   "src": "own_spot_samples_60s"
-  },
-  "1795184100": {
-   "p": 61833.032,
-   "src": "own_spot_samples_60s"
-  },
   "1795184400": {
    "p": 61839.0395,
    "src": "own_spot_samples_60s"
@@ -117,6 +125,22 @@
   "1795186800": {
    "p": 61655.83358333333,
    "src": "own_spot_samples_60s"
+  },
+  "1795187100": {
+   "p": 61516.86483333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795187400": {
+   "p": 61197.334833333334,
+   "src": "own_spot_samples_60s"
+  },
+  "1795187700": {
+   "p": 60898.424333333336,
+   "src": "own_spot_samples_60s"
+  },
+  "1795188000": {
+   "p": 60268.5575,
+   "src": "own_spot_samples_60s"
   }
  },
  "scale_pos": {
@@ -135,14 +159,20 @@
   "scale_in": {
    "fills": [
     {
-     "ask": 0.67,
-     "cost": 3.427385,
-     "gap": 80.11141666666663,
-     "ts": 1795186864.6470559
+     "ask": 0.71,
+     "cost": 3.6220649999999996,
+     "gap": 115.42250000000786,
+     "ts": 1795188088.9761274
+    },
+    {
+     "ask": 0.84,
+     "cost": 4.24704,
+     "gap": 133.37250000000495,
+     "ts": 1795188124.9851632
     }
    ],
-   "side": "Up",
-   "ws": 1795186800
+   "side": "Down",
+   "ws": 1795188000
   },
   "ultimate": {
    "fills": [
@@ -157,7 +187,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1837,
+ "seq": 1847,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -248,7 +278,9 @@
    1795147800,
    1795173000,
    1795184700,
-   1795185900
+   1795185900,
+   1795187400,
+   1795188000
   ],
   "breakout_scale": [
    1795004400,
@@ -336,10 +368,6 @@
    1795185300
   ],
   "legacy_fixed": [
-   1795090500,
-   1795090800,
-   1795096800,
-   1795098000,
    1795098300,
    1795098600,
    1795100400,
@@ -385,7 +413,11 @@
    1795152000,
    1795152900,
    1795153800,
-   1795186800
+   1795186800,
+   1795187100,
+   1795187400,
+   1795187700,
+   1795188000
   ],
   "main": [
    1794859500,
@@ -438,7 +470,6 @@
    1795102800
   ],
   "main_minfill": [
-   1794994800,
    1794997500,
    1794998100,
    1795000200,
@@ -487,7 +518,8 @@
    1795103400,
    1795104900,
    1795140000,
-   1795180500
+   1795180500,
+   1795188000
   ],
   "meta": [
    1795002600,
@@ -646,9 +678,6 @@
    1795178400
   ],
   "scale_in": [
-   1795080900,
-   1795081200,
-   1795081500,
    1795086000,
    1795086600,
    1795089300,
@@ -695,7 +724,10 @@
    1795180500,
    1795181700,
    1795182900,
-   1795186800
+   1795186800,
+   1795187400,
+   1795188000,
+   1795188000
   ],
   "trend_spike": [
    1795018800,

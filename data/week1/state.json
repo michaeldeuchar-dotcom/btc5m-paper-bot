@@ -6,19 +6,19 @@
    "meta": 8,
    "model_early": 2
   },
-  "checks": 225,
+  "checks": 229,
   "choppy_run": 0,
   "clean_run": 0,
   "last": {
    "choppy": false,
    "clean": false,
-   "flags": 1,
-   "range30_pct": 0.612,
-   "straight": 0.048,
-   "vol15_ratio": 0.95,
-   "ws": 1795182000
+   "flags": 0,
+   "range30_pct": 1.105,
+   "straight": 0.159,
+   "vol15_ratio": 1.21,
+   "ws": 1795183200
   },
-  "last_ws": 1795182000,
+  "last_ws": 1795183200,
   "on": true,
   "since": 1795152061.9361541,
   "trips": 5,
@@ -28,7 +28,7 @@
    "legacy_fixed": 15,
    "main_minfill": 2,
    "ride_favorite": 16,
-   "scale_in": 24,
+   "scale_in": 25,
    "trend_spike": 1,
    "trend_volume": 21
   }
@@ -44,27 +44,11 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795182000,
+  "last_check_ws": 1795183200,
   "leader": "trend_volume"
  },
  "open": [],
  "ptb": {
-  "1795178400": {
-   "p": 61521.00275,
-   "src": "own_spot_samples_60s"
-  },
-  "1795178700": {
-   "p": 61526.4525,
-   "src": "own_spot_samples_60s"
-  },
-  "1795179000": {
-   "p": 61542.70758333334,
-   "src": "own_spot_samples_60s"
-  },
-  "1795179300": {
-   "p": 61659.52933333333,
-   "src": "own_spot_samples_60s"
-  },
   "1795179600": {
    "p": 61515.52475,
    "src": "own_spot_samples_60s"
@@ -100,6 +84,22 @@
   "1795182000": {
    "p": 61330.37933333333,
    "src": "own_spot_samples_60s"
+  },
+  "1795182300": {
+   "p": 61385.71525,
+   "src": "own_spot_samples_60s"
+  },
+  "1795182600": {
+   "p": 61691.190500000004,
+   "src": "own_spot_samples_60s"
+  },
+  "1795182900": {
+   "p": 61761.10991666666,
+   "src": "own_spot_samples_60s"
+  },
+  "1795183200": {
+   "p": 61799.19141666666,
+   "src": "own_spot_samples_60s"
   }
  },
  "scale_pos": {
@@ -120,12 +120,12 @@
     {
      "ask": 0.48,
      "cost": 3.1092,
-     "gap": 17.788833333339426,
-     "ts": 1795181765.1592927
+     "gap": 28.575083333336806,
+     "ts": 1795183021.5086553
     }
    ],
-   "side": "Down",
-   "ws": 1795181700
+   "side": "Up",
+   "ws": 1795182900
   },
   "ultimate": {
    "fills": [
@@ -140,7 +140,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1827,
+ "seq": 1828,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -627,7 +627,6 @@
   ],
   "scale_in": [
    1795079700,
-   1795079700,
    1795080900,
    1795081200,
    1795081500,
@@ -675,7 +674,8 @@
    1795178400,
    1795180500,
    1795180500,
-   1795181700
+   1795181700,
+   1795182900
   ],
   "trend_spike": [
    1795018800,

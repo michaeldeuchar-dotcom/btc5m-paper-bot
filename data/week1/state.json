@@ -4,26 +4,26 @@
    "blend_wide": 1,
    "meta": 5
   },
-  "checks": 113,
+  "checks": 117,
   "choppy_run": 0,
-  "clean_run": 1,
+  "clean_run": 3,
   "last": {
    "choppy": false,
    "clean": true,
    "flags": 0,
-   "range30_pct": 0.864,
-   "straight": 0.246,
-   "vol15_ratio": 1.14,
-   "ws": 1795148400
+   "range30_pct": 0.797,
+   "straight": 0.298,
+   "vol15_ratio": 1.47,
+   "ws": 1795149600
   },
-  "last_ws": 1795148400,
+  "last_ws": 1795149600,
   "on": true,
   "since": 1795143061.20834,
   "trips": 4,
   "would_block": {
    "breakout": 3,
    "guarded_favorite": 2,
-   "legacy_fixed": 9,
+   "legacy_fixed": 12,
    "main_minfill": 1,
    "ride_favorite": 5,
    "scale_in": 9,
@@ -39,38 +39,13 @@
   }
  },
  "meta": {
-  "cand": null,
-  "cand_n": 0,
-  "last_check_ws": 1795148400,
+  "cand": "legacy_fixed",
+  "cand_n": 1,
+  "last_check_ws": 1795149600,
   "leader": null
  },
- "open": [
-  {
-   "shares": 9.52,
-   "side": "Down",
-   "total_cost": 4.16073504,
-   "trade_id": "W001770",
-   "variant": "legacy_fixed",
-   "window_start": 1795148400
-  }
- ],
+ "open": [],
  "ptb": {
-  "1795144800": {
-   "p": 62134.36908333333,
-   "src": "own_spot_samples_60s"
-  },
-  "1795145100": {
-   "p": 61981.95333333333,
-   "src": "own_spot_samples_60s"
-  },
-  "1795145400": {
-   "p": 62061.52325,
-   "src": "own_spot_samples_60s"
-  },
-  "1795145700": {
-   "p": 61923.275583333336,
-   "src": "own_spot_samples_60s"
-  },
   "1795146000": {
    "p": 61948.75783333334,
    "src": "own_spot_samples_60s"
@@ -105,6 +80,22 @@
   },
   "1795148400": {
    "p": 61681.45325,
+   "src": "own_spot_samples_60s"
+  },
+  "1795148700": {
+   "p": 61634.438083333334,
+   "src": "own_spot_samples_60s"
+  },
+  "1795149000": {
+   "p": 61572.503833333336,
+   "src": "own_spot_samples_60s"
+  },
+  "1795149300": {
+   "p": 61446.22341666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1795149600": {
+   "p": 61385.665916666665,
    "src": "own_spot_samples_60s"
   }
  },
@@ -146,7 +137,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1770,
+ "seq": 1773,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -320,9 +311,6 @@
    1795141800
   ],
   "legacy_fixed": [
-   1795062900,
-   1795063200,
-   1795065300,
    1795065600,
    1795065900,
    1795066200,
@@ -369,7 +357,10 @@
    1795139700,
    1795147800,
    1795148100,
-   1795148400
+   1795148400,
+   1795148700,
+   1795149000,
+   1795149300
   ],
   "main": [
    1794859500,

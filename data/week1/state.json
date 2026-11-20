@@ -6,19 +6,19 @@
    "meta": 11,
    "model_early": 5
   },
-  "checks": 298,
-  "choppy_run": 0,
+  "checks": 302,
+  "choppy_run": 2,
   "clean_run": 0,
   "last": {
-   "choppy": false,
+   "choppy": true,
    "clean": false,
-   "flags": 1,
-   "range30_pct": 1.992,
-   "straight": 0.024,
-   "vol15_ratio": 0.88,
-   "ws": 1795203900
+   "flags": 2,
+   "range30_pct": 1.165,
+   "straight": 0.067,
+   "vol15_ratio": 0.67,
+   "ws": 1795205100
   },
-  "last_ws": 1795203900,
+  "last_ws": 1795205100,
   "on": false,
   "since": null,
   "trips": 6,
@@ -44,44 +44,20 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795203900,
-  "leader": "scale_in"
+  "last_check_ws": 1795205100,
+  "leader": "ride_favorite"
  },
  "open": [
   {
-   "shares": 5.0,
+   "shares": 16.74,
    "side": "Up",
-   "total_cost": 3.911985,
-   "trade_id": "W001872",
-   "variant": "breakout",
-   "window_start": 1795203600
-  },
-  {
-   "shares": 5.0,
-   "side": "Up",
-   "total_cost": 3.911985,
-   "trade_id": "W001873",
-   "variant": "meta",
-   "window_start": 1795203600
+   "total_cost": 9.994650479999999,
+   "trade_id": "W001874",
+   "variant": "legacy_fixed",
+   "window_start": 1795204800
   }
  ],
  "ptb": {
-  "1795200300": {
-   "p": 58655.821833333335,
-   "src": "own_spot_samples_60s"
-  },
-  "1795200600": {
-   "p": 58197.87325,
-   "src": "own_spot_samples_60s"
-  },
-  "1795200900": {
-   "p": 58415.659583333334,
-   "src": "own_spot_samples_60s"
-  },
-  "1795201200": {
-   "p": 58394.690982142856,
-   "src": "own_spot_samples_60s"
-  },
   "1795201500": {
    "p": 58197.58858333333,
    "src": "own_spot_samples_60s"
@@ -116,6 +92,22 @@
   },
   "1795203900": {
    "p": 58775.36966666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1795204200": {
+   "p": 58473.34658333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795204500": {
+   "p": 58433.54116666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1795204800": {
+   "p": 58484.08708333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795205100": {
+   "p": 58468.132666666665,
    "src": "own_spot_samples_60s"
   }
  },
@@ -157,7 +149,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1873,
+ "seq": 1874,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -341,7 +333,6 @@
    1795185300
   ],
   "legacy_fixed": [
-   1795103400,
    1795103700,
    1795107900,
    1795111200,
@@ -390,7 +381,8 @@
    1795199700,
    1795200300,
    1795200600,
-   1795200900
+   1795200900,
+   1795204800
   ],
   "main": [
    1794859500,

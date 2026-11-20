@@ -1,5 +1,3 @@
-2026-11-20 14:17:00 INFO REASON [main] Not betting: Only bets with 180-240s left; 179s left now.
-2026-11-20 14:17:00 INFO REASON [guarded_favorite] Not betting: Market too wild: last-hour volatility 92% a year (limit 90%).
 2026-11-20 14:17:31 INFO REASON [scale_in] Not betting: First scale_in bet needs 150s+ left; 149s left now.
 2026-11-20 14:17:31 INFO HEARTBEAT pid=2499 cycles=8125 spot=59092.325 open_bets=1 fills=21 spot_ok=8125 spot_fail=0 errors=1 breaker=ON(choppy_run=0 clean_run=3 trips=7 blocked=23 would_block=126)
 2026-11-20 14:17:48 INFO RESOLVED [ride_favorite] W001879 Up outcome=Up WON pnl=$+0.83 variant_total=$-109.95
@@ -398,3 +396,5 @@ RuntimeError: book fetch failed: {'Down': "('Connection aborted.', RemoteDisconn
 2026-11-20 15:26:28 INFO REASON [trend_spike] Not betting: Only bets with 120-210s left; 211s left now.
 2026-11-20 15:26:30 INFO REASON [trend_spike] Not betting: Choppy: price went back and forth (straightness 0.02, need 0.15).
 2026-11-20 15:26:40 INFO HEARTBEAT pid=2499 cycles=10187 spot=58852.744999999995 open_bets=0 fills=23 spot_ok=10187 spot_fail=0 errors=2 breaker=ON(choppy_run=0 clean_run=0 trips=7 blocked=23 would_block=128)
+2026-11-20 15:26:48 INFO STOP file present; exiting
+2026-11-20 15:26:48 INFO bot exit

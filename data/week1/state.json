@@ -6,19 +6,19 @@
    "meta": 11,
    "model_early": 5
   },
-  "checks": 330,
-  "choppy_run": 1,
+  "checks": 334,
+  "choppy_run": 5,
   "clean_run": 0,
   "last": {
    "choppy": true,
    "clean": false,
    "flags": 2,
-   "range30_pct": 0.698,
-   "straight": 0.126,
-   "vol15_ratio": 0.78,
-   "ws": 1795213500
+   "range30_pct": 0.466,
+   "straight": 0.093,
+   "vol15_ratio": 0.73,
+   "ws": 1795214700
   },
-  "last_ws": 1795213500,
+  "last_ws": 1795214700,
   "on": true,
   "since": 1795205460.5813675,
   "trips": 7,
@@ -27,7 +27,7 @@
    "guarded_favorite": 4,
    "legacy_fixed": 29,
    "main_minfill": 5,
-   "ride_favorite": 24,
+   "ride_favorite": 25,
    "scale_in": 29,
    "trend_spike": 1,
    "trend_volume": 25
@@ -44,36 +44,11 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795213500,
+  "last_check_ws": 1795214700,
   "leader": "ride_favorite"
  },
- "open": [
-  {
-   "shares": 5.88,
-   "side": "Down",
-   "total_cost": 5.050479,
-   "trade_id": "W001880",
-   "variant": "ride_favorite",
-   "window_start": 1795213200
-  }
- ],
+ "open": [],
  "ptb": {
-  "1795209900": {
-   "p": 58558.571833333335,
-   "src": "own_spot_samples_60s"
-  },
-  "1795210200": {
-   "p": 58605.49566666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795210500": {
-   "p": 58629.2955,
-   "src": "own_spot_samples_60s"
-  },
-  "1795210800": {
-   "p": 58781.44058333334,
-   "src": "own_spot_samples_60s"
-  },
   "1795211100": {
    "p": 59231.91016666666,
    "src": "own_spot_samples_60s"
@@ -108,6 +83,22 @@
   },
   "1795213500": {
    "p": 59028.45883333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795213800": {
+   "p": 59019.85016666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1795214100": {
+   "p": 58952.06958333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795214400": {
+   "p": 59040.05175,
+   "src": "own_spot_samples_60s"
+  },
+  "1795214700": {
+   "p": 59114.95025,
    "src": "own_spot_samples_60s"
   }
  },
@@ -149,7 +140,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1880,
+ "seq": 1881,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -591,7 +582,6 @@
    1795189200
   ],
   "ride_favorite": [
-   1795039500,
    1795039800,
    1795040100,
    1795040700,
@@ -640,7 +630,8 @@
    1795199700,
    1795212300,
    1795212600,
-   1795213200
+   1795213200,
+   1795213500
   ],
   "scale_in": [
    1795101600,

@@ -1,31 +1,33 @@
 {
  "breaker": {
   "blocked": {
-   "meta": 4
+   "blend_wide": 1,
+   "meta": 5
   },
-  "checks": 81,
-  "choppy_run": 4,
+  "checks": 85,
+  "choppy_run": 0,
   "clean_run": 0,
   "last": {
-   "choppy": true,
+   "choppy": false,
    "clean": false,
-   "flags": 2,
-   "range30_pct": 0.8,
-   "straight": 0.014,
-   "vol15_ratio": 0.74,
-   "ws": 1795138800
+   "flags": 0,
+   "range30_pct": 1.907,
+   "straight": 0.158,
+   "vol15_ratio": 1.88,
+   "ws": 1795140000
   },
-  "last_ws": 1795138800,
+  "last_ws": 1795140000,
   "on": true,
   "since": 1795133161.325339,
   "trips": 3,
   "would_block": {
    "breakout": 2,
    "guarded_favorite": 1,
-   "legacy_fixed": 4,
+   "legacy_fixed": 6,
+   "main_minfill": 1,
    "ride_favorite": 5,
-   "scale_in": 7,
-   "trend_volume": 8
+   "scale_in": 8,
+   "trend_volume": 9
   }
  },
  "cooldown": {
@@ -37,38 +39,38 @@
   }
  },
  "meta": {
-  "cand": null,
-  "cand_n": 0,
-  "last_check_ws": 1795138800,
+  "cand": "legacy_fixed",
+  "cand_n": 1,
+  "last_check_ws": 1795140000,
   "leader": "trend_volume"
  },
  "open": [
   {
    "shares": 5.0,
    "side": "Down",
-   "total_cost": 3.231585,
-   "trade_id": "W001753",
-   "variant": "breakout",
-   "window_start": 1795138800
+   "total_cost": 2.38694,
+   "trade_id": "W001756",
+   "variant": "main_minfill",
+   "window_start": 1795140000
+  },
+  {
+   "shares": 6.52,
+   "side": "Down",
+   "total_cost": 3.11256976,
+   "trade_id": "W001757",
+   "variant": "scale_in",
+   "window_start": 1795140000
+  },
+  {
+   "shares": 5.0,
+   "side": "Down",
+   "total_cost": 2.2862400000000003,
+   "trade_id": "W001758",
+   "variant": "trend_volume",
+   "window_start": 1795140000
   }
  ],
  "ptb": {
-  "1795135200": {
-   "p": 61969.439666666665,
-   "src": "own_spot_samples_60s"
-  },
-  "1795135500": {
-   "p": 62045.83816666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795135800": {
-   "p": 61961.705500000004,
-   "src": "own_spot_samples_60s"
-  },
-  "1795136100": {
-   "p": 61929.93933333333,
-   "src": "own_spot_samples_60s"
-  },
   "1795136400": {
    "p": 62034.519,
    "src": "own_spot_samples_60s"
@@ -104,6 +106,22 @@
   "1795138800": {
    "p": 62017.204750000004,
    "src": "own_spot_samples_60s"
+  },
+  "1795139100": {
+   "p": 61960.40083333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795139400": {
+   "p": 61886.0715,
+   "src": "own_spot_samples_60s"
+  },
+  "1795139700": {
+   "p": 61379.431749999996,
+   "src": "own_spot_samples_60s"
+  },
+  "1795140000": {
+   "p": 61467.16225,
+   "src": "own_spot_samples_60s"
   }
  },
  "scale_pos": {
@@ -122,14 +140,14 @@
   "scale_in": {
    "fills": [
     {
-     "ask": 0.61,
-     "cost": 3.1332649999999997,
-     "gap": 43.254000000000815,
-     "ts": 1795136500.1934335
+     "ask": 0.46,
+     "cost": 3.11256976,
+     "gap": 26.967250000001513,
+     "ts": 1795140091.26346
     }
    ],
    "side": "Down",
-   "ws": 1795136400
+   "ws": 1795140000
   },
   "ultimate": {
    "fills": [
@@ -144,7 +162,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1753,
+ "seq": 1758,
  "traded_windows": {
   "blend_wide": [
    1795010700,
@@ -315,8 +333,6 @@
    1795125300
   ],
   "legacy_fixed": [
-   1795050600,
-   1795051800,
    1795052100,
    1795053000,
    1795061100,
@@ -364,7 +380,9 @@
    1795136400,
    1795137000,
    1795137900,
-   1795138200
+   1795138200,
+   1795139100,
+   1795139700
   ],
   "main": [
    1794859500,
@@ -417,7 +435,6 @@
    1795102800
   ],
   "main_minfill": [
-   1794993900,
    1794994500,
    1794994800,
    1794997500,
@@ -466,7 +483,8 @@
    1795101900,
    1795102800,
    1795103400,
-   1795104900
+   1795104900,
+   1795140000
   ],
   "meta": [
    1795002300,
@@ -626,7 +644,6 @@
   ],
   "scale_in": [
    1795032900,
-   1795032900,
    1795033800,
    1795034700,
    1795034700,
@@ -674,14 +691,14 @@
    1795134000,
    1795136100,
    1795136100,
-   1795136400
+   1795136400,
+   1795140000
   ],
   "trend_spike": [
    1795018800,
    1795102800
   ],
   "trend_volume": [
-   1794934800,
    1794955200,
    1794955500,
    1794956100,
@@ -730,7 +747,8 @@
    1795125300,
    1795125600,
    1795128000,
-   1795128300
+   1795128300,
+   1795140000
   ],
   "ultimate": [
    1794990900,

@@ -6,19 +6,19 @@
    "meta": 5,
    "model_early": 1
   },
-  "checks": 185,
+  "checks": 189,
   "choppy_run": 0,
-  "clean_run": 0,
+  "clean_run": 3,
   "last": {
    "choppy": false,
-   "clean": false,
-   "flags": 1,
-   "range30_pct": 0.385,
-   "straight": 0.056,
-   "vol15_ratio": 1.21,
-   "ws": 1795170000
+   "clean": true,
+   "flags": 0,
+   "range30_pct": 1.115,
+   "straight": 0.404,
+   "vol15_ratio": 1.2,
+   "ws": 1795171200
   },
-  "last_ws": 1795170000,
+  "last_ws": 1795171200,
   "on": true,
   "since": 1795152061.9361541,
   "trips": 5,
@@ -29,7 +29,7 @@
    "main_minfill": 1,
    "ride_favorite": 5,
    "scale_in": 17,
-   "trend_volume": 14
+   "trend_volume": 15
   }
  },
  "cooldown": {
@@ -51,27 +51,20 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795170000,
+  "last_check_ws": 1795171200,
   "leader": "scale_in"
  },
- "open": [],
+ "open": [
+  {
+   "shares": 5.71,
+   "side": "Up",
+   "total_cost": 2.08943175,
+   "trade_id": "W001798",
+   "variant": "trend_volume",
+   "window_start": 1795171200
+  }
+ ],
  "ptb": {
-  "1795166400": {
-   "p": 61598.20396551724,
-   "src": "own_spot_samples_60s"
-  },
-  "1795166700": {
-   "p": 61755.25158333334,
-   "src": "own_spot_samples_60s"
-  },
-  "1795167000": {
-   "p": 61640.33025,
-   "src": "own_spot_samples_60s"
-  },
-  "1795167300": {
-   "p": 61595.65258333333,
-   "src": "own_spot_samples_60s"
-  },
   "1795167600": {
    "p": 61530.28491666667,
    "src": "own_spot_samples_60s"
@@ -106,6 +99,22 @@
   },
   "1795170000": {
    "p": 61647.834083333335,
+   "src": "own_spot_samples_60s"
+  },
+  "1795170300": {
+   "p": 61762.871750000006,
+   "src": "own_spot_samples_60s"
+  },
+  "1795170600": {
+   "p": 61895.67808333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795170900": {
+   "p": 62069.18275,
+   "src": "own_spot_samples_60s"
+  },
+  "1795171200": {
+   "p": 62202.828,
    "src": "own_spot_samples_60s"
   }
  },
@@ -153,7 +162,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1797,
+ "seq": 1798,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -693,7 +702,6 @@
    1795102800
   ],
   "trend_volume": [
-   1794965400,
    1794990900,
    1794997500,
    1794998100,
@@ -742,7 +750,8 @@
    1795153800,
    1795160100,
    1795167300,
-   1795167600
+   1795167600,
+   1795171200
   ],
   "ultimate": [
    1794990900,

@@ -6,26 +6,26 @@
    "meta": 13,
    "model_early": 6
   },
-  "checks": 414,
+  "checks": 418,
   "choppy_run": 2,
   "clean_run": 0,
   "last": {
    "choppy": true,
    "clean": false,
    "flags": 2,
-   "range30_pct": 0.688,
-   "straight": 0.126,
-   "vol15_ratio": 0.67,
-   "ws": 1795238700
+   "range30_pct": 1.272,
+   "straight": 0.044,
+   "vol15_ratio": 0.77,
+   "ws": 1795239900
   },
-  "last_ws": 1795238700,
+  "last_ws": 1795239900,
   "on": true,
   "since": 1795236960.6080046,
   "trips": 8,
   "would_block": {
    "breakout": 12,
    "guarded_favorite": 10,
-   "legacy_fixed": 41,
+   "legacy_fixed": 42,
    "main_minfill": 5,
    "ride_favorite": 25,
    "scale_in": 37,
@@ -52,27 +52,11 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795238700,
+  "last_check_ws": 1795239900,
   "leader": "scale_in"
  },
  "open": [],
  "ptb": {
-  "1795235100": {
-   "p": 55730.7875,
-   "src": "own_spot_samples_60s"
-  },
-  "1795235400": {
-   "p": 55697.02958333333,
-   "src": "own_spot_samples_60s"
-  },
-  "1795235700": {
-   "p": 55913.0295,
-   "src": "own_spot_samples_60s"
-  },
-  "1795236000": {
-   "p": 55953.97575,
-   "src": "own_spot_samples_60s"
-  },
   "1795236300": {
    "p": 55838.18241666666,
    "src": "own_spot_samples_60s"
@@ -107,6 +91,22 @@
   },
   "1795238700": {
    "p": 56127.97216666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1795239000": {
+   "p": 56140.98925,
+   "src": "own_spot_samples_60s"
+  },
+  "1795239300": {
+   "p": 55909.80291666666,
+   "src": "own_spot_samples_60s"
+  },
+  "1795239600": {
+   "p": 55926.001000000004,
+   "src": "own_spot_samples_60s"
+  },
+  "1795239900": {
+   "p": 55756.902416666664,
    "src": "own_spot_samples_60s"
   }
  },
@@ -154,7 +154,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1929,
+ "seq": 1930,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -347,7 +347,6 @@
    1795230300
   ],
   "legacy_fixed": [
-   1795148100,
    1795148400,
    1795148700,
    1795149000,
@@ -396,7 +395,8 @@
    1795234800,
    1795235100,
    1795237200,
-   1795237800
+   1795237800,
+   1795239300
   ],
   "main": [
    1794859500,

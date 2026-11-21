@@ -6,19 +6,19 @@
    "meta": 17,
    "model_early": 6
   },
-  "checks": 450,
+  "checks": 454,
   "choppy_run": 0,
   "clean_run": 0,
   "last": {
    "choppy": false,
    "clean": false,
-   "flags": 0,
-   "range30_pct": 0.846,
-   "straight": 0.187,
-   "vol15_ratio": 0.88,
-   "ws": 1795249500
+   "flags": 1,
+   "range30_pct": 1.039,
+   "straight": 0.071,
+   "vol15_ratio": 1.52,
+   "ws": 1795250700
   },
-  "last_ws": 1795249500,
+  "last_ws": 1795250700,
   "on": true,
   "since": 1795248060.163845,
   "trips": 9,
@@ -29,8 +29,8 @@
    "main_minfill": 5,
    "ride_favorite": 25,
    "scale_in": 40,
-   "trend_spike": 1,
-   "trend_volume": 34
+   "trend_spike": 2,
+   "trend_volume": 35
   }
  },
  "cooldown": {
@@ -50,27 +50,11 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795249500,
+  "last_check_ws": 1795250700,
   "leader": "trend_volume"
  },
  "open": [],
  "ptb": {
-  "1795245900": {
-   "p": 58219.908749999995,
-   "src": "own_spot_samples_60s"
-  },
-  "1795246200": {
-   "p": 58061.211,
-   "src": "own_spot_samples_60s"
-  },
-  "1795246500": {
-   "p": 58111.40541666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795246800": {
-   "p": 58122.823333333334,
-   "src": "own_spot_samples_60s"
-  },
   "1795247100": {
    "p": 58037.75175,
    "src": "own_spot_samples_60s"
@@ -105,6 +89,22 @@
   },
   "1795249500": {
    "p": 57530.22341666666,
+   "src": "own_spot_samples_60s"
+  },
+  "1795249800": {
+   "p": 57605.34008333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795250100": {
+   "p": 57295.538583333335,
+   "src": "own_spot_samples_60s"
+  },
+  "1795250400": {
+   "p": 57405.479583333334,
+   "src": "own_spot_samples_60s"
+  },
+  "1795250700": {
+   "p": 57715.25908333333,
    "src": "own_spot_samples_60s"
   }
  },
@@ -146,7 +146,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1944,
+ "seq": 1946,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -706,10 +706,10 @@
   "trend_spike": [
    1795018800,
    1795102800,
-   1795176600
+   1795176600,
+   1795250100
   ],
   "trend_volume": [
-   1795062900,
    1795063200,
    1795064100,
    1795076400,
@@ -758,7 +758,8 @@
    1795230300,
    1795240800,
    1795241100,
-   1795241400
+   1795241400,
+   1795250100
   ],
   "ultimate": [
    1794990900,

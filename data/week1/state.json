@@ -6,19 +6,19 @@
    "meta": 17,
    "model_early": 6
   },
-  "checks": 498,
+  "checks": 502,
   "choppy_run": 0,
-  "clean_run": 3,
+  "clean_run": 1,
   "last": {
    "choppy": false,
    "clean": true,
    "flags": 0,
-   "range30_pct": 0.79,
-   "straight": 0.242,
-   "vol15_ratio": 1.17,
-   "ws": 1795263900
+   "range30_pct": 1.501,
+   "straight": 0.22,
+   "vol15_ratio": 1.48,
+   "ws": 1795265100
   },
-  "last_ws": 1795263900,
+  "last_ws": 1795265100,
   "on": true,
   "since": 1795248060.163845,
   "trips": 9,
@@ -27,7 +27,7 @@
    "guarded_favorite": 12,
    "legacy_fixed": 43,
    "main_minfill": 5,
-   "ride_favorite": 35,
+   "ride_favorite": 37,
    "scale_in": 40,
    "trend_spike": 2,
    "trend_volume": 36
@@ -50,27 +50,11 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795263900,
+  "last_check_ws": 1795265100,
   "leader": "ride_favorite"
  },
  "open": [],
  "ptb": {
-  "1795260300": {
-   "p": 57809.97816666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795260600": {
-   "p": 57836.974,
-   "src": "own_spot_samples_60s"
-  },
-  "1795260900": {
-   "p": 58298.618916666666,
-   "src": "own_spot_samples_60s"
-  },
-  "1795261200": {
-   "p": 58107.074583333335,
-   "src": "own_spot_samples_60s"
-  },
   "1795261500": {
    "p": 58081.09216666666,
    "src": "own_spot_samples_60s"
@@ -105,6 +89,22 @@
   },
   "1795263900": {
    "p": 58386.826166666666,
+   "src": "own_spot_samples_60s"
+  },
+  "1795264200": {
+   "p": 58388.99575,
+   "src": "own_spot_samples_60s"
+  },
+  "1795264500": {
+   "p": 58436.743083333335,
+   "src": "own_spot_samples_60s"
+  },
+  "1795264800": {
+   "p": 58806.92216666667,
+   "src": "own_spot_samples_60s"
+  },
+  "1795265100": {
+   "p": 58875.38333333333,
    "src": "own_spot_samples_60s"
   }
  },
@@ -146,7 +146,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1957,
+ "seq": 1959,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -600,8 +600,6 @@
    1795189200
   ],
   "ride_favorite": [
-   1795090500,
-   1795091700,
    1795092000,
    1795092600,
    1795092900,
@@ -649,7 +647,9 @@
    1795261500,
    1795261800,
    1795262400,
-   1795262700
+   1795262700,
+   1795264200,
+   1795264800
   ],
   "scale_in": [
    1795140000,

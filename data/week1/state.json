@@ -6,19 +6,19 @@
    "meta": 11,
    "model_early": 5
   },
-  "checks": 354,
-  "choppy_run": 2,
+  "checks": 358,
+  "choppy_run": 0,
   "clean_run": 0,
   "last": {
-   "choppy": true,
+   "choppy": false,
    "clean": false,
-   "flags": 2,
-   "range30_pct": 0.363,
-   "straight": 0.036,
-   "vol15_ratio": 0.62,
-   "ws": 1795220700
+   "flags": 1,
+   "range30_pct": 0.345,
+   "straight": 0.074,
+   "vol15_ratio": 0.97,
+   "ws": 1795221900
   },
-  "last_ws": 1795220700,
+  "last_ws": 1795221900,
   "on": true,
   "since": 1795205460.5813675,
   "trips": 7,
@@ -28,7 +28,7 @@
    "legacy_fixed": 29,
    "main_minfill": 5,
    "ride_favorite": 25,
-   "scale_in": 29,
+   "scale_in": 30,
    "trend_spike": 1,
    "trend_volume": 26
   }
@@ -44,27 +44,11 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795220700,
-  "leader": "ride_favorite"
+  "last_check_ws": 1795221900,
+  "leader": null
  },
  "open": [],
  "ptb": {
-  "1795217100": {
-   "p": 58919.10958333334,
-   "src": "own_spot_samples_60s"
-  },
-  "1795217400": {
-   "p": 58847.318666666666,
-   "src": "own_spot_samples_60s"
-  },
-  "1795217700": {
-   "p": 58845.668,
-   "src": "own_spot_samples_60s"
-  },
-  "1795218000": {
-   "p": 58901.05308333333,
-   "src": "own_spot_samples_60s"
-  },
   "1795218300": {
    "p": 58873.58575,
    "src": "own_spot_samples_60s"
@@ -100,6 +84,22 @@
   "1795220700": {
    "p": 58886.85191666666,
    "src": "own_spot_samples_60s"
+  },
+  "1795221000": {
+   "p": 58923.50633333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795221300": {
+   "p": 58944.260083333334,
+   "src": "own_spot_samples_60s"
+  },
+  "1795221600": {
+   "p": 58944.32433333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795221900": {
+   "p": 58927.1015,
+   "src": "own_spot_samples_60s"
   }
  },
  "scale_pos": {
@@ -118,14 +118,14 @@
   "scale_in": {
    "fills": [
     {
-     "ask": 0.69,
-     "cost": 3.5248649999999997,
-     "gap": 156.45683333333,
-     "ts": 1795200416.8426652
+     "ask": 0.53,
+     "cost": 3.09849342,
+     "gap": 15.069416666658071,
+     "ts": 1795220848.3475695
     }
    ],
    "side": "Down",
-   "ws": 1795200300
+   "ws": 1795220700
   },
   "ultimate": {
    "fills": [
@@ -140,7 +140,7 @@
    "ws": 1795108500
   }
  },
- "seq": 1883,
+ "seq": 1884,
  "traded_windows": {
   "blend_wide": [
    1795011900,
@@ -635,7 +635,6 @@
    1795213500
   ],
   "scale_in": [
-   1795101600,
    1795101900,
    1795102500,
    1795102800,
@@ -684,7 +683,8 @@
    1795188600,
    1795189200,
    1795189200,
-   1795200300
+   1795200300,
+   1795220700
   ],
   "trend_spike": [
    1795018800,

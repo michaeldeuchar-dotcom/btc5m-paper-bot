@@ -6,19 +6,19 @@
    "meta": 13,
    "model_early": 6
   },
-  "checks": 402,
-  "choppy_run": 0,
-  "clean_run": 13,
+  "checks": 406,
+  "choppy_run": 1,
+  "clean_run": 0,
   "last": {
-   "choppy": false,
-   "clean": true,
-   "flags": 1,
-   "range30_pct": 2.241,
-   "straight": 0.355,
-   "vol15_ratio": 0.74,
-   "ws": 1795235100
+   "choppy": true,
+   "clean": false,
+   "flags": 2,
+   "range30_pct": 1.079,
+   "straight": 0.131,
+   "vol15_ratio": 0.59,
+   "ws": 1795236300
   },
-  "last_ws": 1795235100,
+  "last_ws": 1795236300,
   "on": false,
   "since": null,
   "trips": 7,
@@ -52,36 +52,11 @@
  "meta": {
   "cand": null,
   "cand_n": 0,
-  "last_check_ws": 1795235100,
+  "last_check_ws": 1795236300,
   "leader": "scale_in"
  },
- "open": [
-  {
-   "shares": 5.26,
-   "side": "Down",
-   "total_cost": 3.0884458199999996,
-   "trade_id": "W001927",
-   "variant": "legacy_fixed",
-   "window_start": 1795235100
-  }
- ],
+ "open": [],
  "ptb": {
-  "1795231500": {
-   "p": 58256.667499999996,
-   "src": "own_spot_samples_60s"
-  },
-  "1795231800": {
-   "p": 58190.57266666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795232100": {
-   "p": 56938.65541666667,
-   "src": "own_spot_samples_60s"
-  },
-  "1795232400": {
-   "p": 56968.371166666664,
-   "src": "own_spot_samples_60s"
-  },
   "1795232700": {
    "p": 56677.09016666667,
    "src": "own_spot_samples_60s"
@@ -116,6 +91,22 @@
   },
   "1795235100": {
    "p": 55730.7875,
+   "src": "own_spot_samples_60s"
+  },
+  "1795235400": {
+   "p": 55697.02958333333,
+   "src": "own_spot_samples_60s"
+  },
+  "1795235700": {
+   "p": 55913.0295,
+   "src": "own_spot_samples_60s"
+  },
+  "1795236000": {
+   "p": 55953.97575,
+   "src": "own_spot_samples_60s"
+  },
+  "1795236300": {
+   "p": 55838.18241666666,
    "src": "own_spot_samples_60s"
   }
  },

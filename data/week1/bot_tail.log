@@ -1,5 +1,3 @@
-2026-11-20 20:01:02 INFO REASON [legacy_fixed] Not betting: Up at 70c: my estimate 68% beats price+fee by only -3.7c (need 3c).
-2026-11-20 20:01:02 INFO REASON [trend_volume] Not betting: Market too wild: last-hour volatility 163% a year (limit 90%).
 2026-11-20 20:01:02 INFO REASON [breakout] Not betting: Price is inside its 30-min range ($56,281-$58,204); no breakout.
 2026-11-20 20:01:02 INFO REASON [scale_in] Not betting: Up at 70c: my estimate 68% beats price+fee by only -3.3c (need 3c).
 2026-11-20 20:01:02 INFO REASON [meta] Not betting: Leader scale_in (+21.0% over 3h) isn't betting this round: #1 scale_in not betting (edge_small).
@@ -398,3 +396,5 @@
 2026-11-20 21:07:01 INFO REASON [guarded_favorite] Not betting: Market too wild: last-hour volatility 173% a year (limit 90%).
 2026-11-20 21:07:31 INFO REASON [scale_in] Not betting: First scale_in bet needs 150s+ left; 149s left now.
 2026-11-20 21:07:42 INFO HEARTBEAT pid=2451 cycles=10206 spot=56135.29 open_bets=0 fills=47 spot_ok=10206 spot_fail=0 errors=0 breaker=ON(choppy_run=5 clean_run=0 trips=8 blocked=28 would_block=161)
+2026-11-20 21:07:48 INFO received signal 15; stopping (forced exit in 20s if stuck)
+2026-11-20 21:07:48 INFO bot exit
